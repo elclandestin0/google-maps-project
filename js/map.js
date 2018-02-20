@@ -13,7 +13,8 @@ function initMap() {
                     "elementType": "labels.text.fill",
                     "stylers": [{
                         "color": "#ffffff"
-                    }]
+                    }
+                  ]
                 },
                 {
                     "featureType": "all",
