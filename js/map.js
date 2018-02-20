@@ -1,6 +1,7 @@
 var map;
 function initMap() {
-    // Here, we create a new Maps instance from the Google Maps API
+    // Here, we create a new Maps instance from the Google Maps API and set the
+    // center to Montreal
     map = new google.maps.Map(
         document.getElementById('map'), {
             center: {
@@ -8,6 +9,7 @@ function initMap() {
                 lng: -73.5673
             },
             zoom: 11,
+            // styles provided by: www.snazzymaps.com, name: Night commander
             styles: [{
                     "featureType": "all",
                     "elementType": "labels.text.fill",
