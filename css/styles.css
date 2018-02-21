@@ -6,6 +6,14 @@ body {
   padding: 0;
 }
 
+.white {
+  color: #ffffff;
+}
+
+.main-app {
+  background-color: #021019;
+}
+
 .container-fluid {
   height: 100%;
   width: 100%;

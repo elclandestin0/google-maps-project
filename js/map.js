@@ -171,7 +171,7 @@ function goToArea(){
       }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           map.setCenter(results[0].geometry.location);
-          map.setZoom(12);
+          map.setZoom(13);
         } else {
           window.alert('Could not find location, enter something more specific');
         }
