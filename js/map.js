@@ -128,15 +128,47 @@ function initMap() {
             ]
 
         });
-
-        var searchPlaces = new google.maps.places.Autocomplete(
-          document.getElementById('places-search')
-        );
-        var searchBox = new google.maps.places.SearchBox(
-            document.getElementById('places-search'));
-
-        searchPlaces.bindTo('bounds', map);
+        // Dead code for use later
+        // var searchBox = new google.maps.places.SearchBox(
+        //     document.getElementById('search-area'));
+        // searchPlaces.bindTo('bounds', map);
         // Bias the searchbox to within the bounds of the map.
-        searchBox.setBounds(map.getBounds());
-        searchBox.bindTo('bounds', map);
+        // searchBox.setBounds(map.getBounds());
+        // searchBox.bindTo('bounds', map);
+
+        // Here, we create a variable that tags the search-area input in our respective
+        // DOM.
+        var searchPlaces = new google.maps.places.Autocomplete(
+          document.getElementById('search-area')
+        );
+        document.getElementById('search-area-go').addEventListener('click', function(){
+          goToArea();
+        });
 }
+
+
+
+// We then tag the go-places button and add an eventListener to execute the
+// goToArea() function.
+
+
+function goToArea(){
+  var geocoder = new google.maps.Geocoder();
+  var address = document.getElementById('search-area').value;
+
+  if (address == ""){
+    window.alert("Please enter the address.");
+  } else {
+    geocoder.geocode(
+      {
+        address: address
+      }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          map.setCenter(results[0].geometry.location);
+          map.setZoom(12);
+        } else {
+          window.alert('Could not find location, enter something more specific');
+        }
+      }
+    )};
+  }
