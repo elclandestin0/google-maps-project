@@ -11,6 +11,12 @@ function initMap() {
             zoom: 11,
             // styles provided by: www.snazzymaps.com, name: Night commander
             styles: [{
+    "featureType": "road",
+    "elementType": "labels",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  },                {
                     "featureType": "all",
                     "elementType": "labels.text.fill",
                     "stylers": [{
