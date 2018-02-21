@@ -8,4 +8,6 @@ var Listing = function(data){
   this.name = ko.observable(data.name);
 }
 
+searchPlaces.bindTo('bounds', map);
+
 ko.applyBindings(ViewModel())

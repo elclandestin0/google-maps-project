@@ -16,9 +16,16 @@
           <h1> what's good in the 'hood? </h1>
         </div>
         <div class="row">
-          <div data-bind="with: currentListing">
+          <hr>
+          <span class="text">what's nearby?</span>
+          <input id="places-search" type="text" placeholder="Ex: Pizza delivery in NYC">
+          <input id="go-places" type="button" value="Go">
+        </div>
+        <div class="row">
+          <!-- <hr> -->
+          <!-- <div data-bind="with: currentListing">
             <div data-bind="text: name"></div>
-          </div>
+          </div> -->
         </div>
       </div>
       <!-- End Listings -->
@@ -30,7 +37,7 @@
     </div>
     <!-- End Container -->
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGi1sF4Ten1ctxC4bgjI_bPOkaAW89F50&v=3&callback=initMap"></script>
+        src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyDGi1sF4Ten1ctxC4bgjI_bPOkaAW89F50&v=3&callback=initMap"></script>
     <script src="js/map.js"></script>
     <script src="js/lib/knockout-3.4.2.js"></script>
     <script src="js/listings.js"></script>

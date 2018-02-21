@@ -128,4 +128,15 @@ function initMap() {
             ]
 
         });
+
+        var searchPlaces = new google.maps.places.Autocomplete(
+          document.getElementById('places-search')
+        );
+        var searchBox = new google.maps.places.SearchBox(
+            document.getElementById('places-search'));
+
+        searchPlaces.bindTo('bounds', map);
+        // Bias the searchbox to within the bounds of the map.
+        searchBox.setBounds(map.getBounds());
+        searchBox.bindTo('bounds', map);
 }
