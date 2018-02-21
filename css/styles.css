@@ -10,6 +10,10 @@ body {
   color: #ffffff;
 }
 
+.line-color {
+  color: #0c4152
+}
+
 .main-app {
   background-color: #021019;
 }

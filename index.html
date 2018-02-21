@@ -16,16 +16,32 @@
           <h4 class="white"> what's good in the 'hood? </h4>
         </div>
         <div class="row">
-          <hr>
-          <span class="white text">1) where do you live?</span>
-          <input id="search-area" type="text" placeholder="Ex: Pizza delivery in NYC">
-          <input id="search-area-go" type="button" value="Go">
-        </div>
-        <div class="row">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" href="#"><strong>nightlife</strong></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><strong>eat</strong></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><strong>festivals</strong></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#"><strong>landmarks</strong></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#"><strong>top-sights</strong></a>
+            </li>
+          </ul>
           <!-- <hr> -->
           <!-- <div data-bind="with: currentListing">
             <div data-bind="text: name"></div>
           </div> -->
+        </div>
+        <div class="row">
+          <span class="white">where do you live?</span>
+          <input id="search-area" type="text" placeholder="Ex: Pizza delivery in NYC">
+          <input id="search-area-go" type="button" value="Go">
         </div>
       </div>
       <!-- End Listings -->
