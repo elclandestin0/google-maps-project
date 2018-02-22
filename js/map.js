@@ -52,7 +52,7 @@ function initMap() {
                             "lightness": 14
                         },
                         {
-                            "weight": 1.4
+                            "weight": 1.0
                         }
                     ]
                 },
@@ -150,13 +150,31 @@ function initMap() {
         document.getElementById('search-area-go').addEventListener('click', function(){
           goToArea();
         });
+        CLIENT_ID = "IGSBB23NYXAIMP5CO1OVV4M3DSR5PFCMDYF5UAWHSRKK4AJH";
+        CLIENT_SECRET = "H3S03FQBEVV3YCRRORCQLG4TFKQYWM00POWVXAUQZCNVWGF3";
+
+        var foursquareUrl = "https://api.foursquare.com/v2/venues/search";
+        foursquareUrl += '?' + $.param({
+          'client_id': CLIENT_ID,
+          'client_secret': CLIENT_SECRET,
+          'near':'montreal',
+          'query':'restaurant',
+          'v':"20180101"
+        });
+
+        $.ajax({
+          url: foursquareUrl,
+          dataType: 'json',
+               success: function(data){
+                 console.log(data);
+               }
+        });
+
+
 }
-
-
 
 // We then tag the go-places button and add an eventListener to execute the
 // goToArea() function.
-
 
 function goToArea(){
   var geocoder = new google.maps.Geocoder();
