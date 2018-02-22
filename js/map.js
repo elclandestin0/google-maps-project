@@ -1,4 +1,8 @@
+// Initialize global variables here.
 var map;
+FOURSQUARE_CLIENT_ID = "IGSBB23NYXAIMP5CO1OVV4M3DSR5PFCMDYF5UAWHSRKK4AJH";
+FOURSQUARE_CLIENT_SECRET = "H3S03FQBEVV3YCRRORCQLG4TFKQYWM00POWVXAUQZCNVWGF3";
+
 function initMap() {
     // Here, we create a new Maps instance from the Google Maps API and set the
     // center to Montreal
@@ -147,28 +151,16 @@ function initMap() {
         var searchPlaces = new google.maps.places.Autocomplete(
           document.getElementById('search-area')
         );
+        // Here we define all the event listeners, clickable by the tagged
+        // buttons.
         document.getElementById('search-area-go').addEventListener('click', function(){
           goToArea();
         });
-        CLIENT_ID = "IGSBB23NYXAIMP5CO1OVV4M3DSR5PFCMDYF5UAWHSRKK4AJH";
-        CLIENT_SECRET = "H3S03FQBEVV3YCRRORCQLG4TFKQYWM00POWVXAUQZCNVWGF3";
-
-        var foursquareUrl = "https://api.foursquare.com/v2/venues/search";
-        foursquareUrl += '?' + $.param({
-          'client_id': CLIENT_ID,
-          'client_secret': CLIENT_SECRET,
-          'near':'montreal',
-          'query':'restaurant',
-          'v':"20180101"
+        document.getElementById('nightlife').addEventListener('click', function(){
+          queryNightLife();
         });
 
-        $.ajax({
-          url: foursquareUrl,
-          dataType: 'json',
-               success: function(data){
-                 console.log(data);
-               }
-        });
+
 
 
 }
@@ -196,3 +188,24 @@ function goToArea(){
       }
     )};
   }
+
+function queryNightLife(){
+  var foursquareUrl = "https://api.foursquare.com/v2/venues/search";
+  foursquareUrl += '?' + $.param({
+    'client_id': FOURSQUARE_CLIENT_ID,
+    'client_secret': FOURSQUARE_CLIENT_SECRET,
+    'near':'montreal',
+    'categoryId':'4d4b7105d754a06376d81259',
+    'v':"20180101"
+  });
+
+  $.ajax({
+    url: foursquareUrl,
+    dataType: 'json',
+         success: function(data){
+           for (var i = 0; i < data.response.venues.length; i++){
+             console.log(data.response.venues[i]);
+           }
+         }
+  });
+}
