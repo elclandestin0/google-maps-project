@@ -4,6 +4,8 @@ var jsonData;
 var foodListings;
 FOURSQUARE_CLIENT_ID = "IGSBB23NYXAIMP5CO1OVV4M3DSR5PFCMDYF5UAWHSRKK4AJH";
 FOURSQUARE_CLIENT_SECRET = "H3S03FQBEVV3YCRRORCQLG4TFKQYWM00POWVXAUQZCNVWGF3";
+var foodCategoryId = '4d4b7105d754a06374d81259';
+var nightlifeCategoryId = '4d4b7105d754a06376d81259'
 
 function initMap() {
     // Here, we create a new Maps instance from the Google Maps API and set the
@@ -17,18 +19,17 @@ function initMap() {
             zoom: 11,
             // styles provided by: www.snazzymaps.com, name: Night commander
             styles: [{
-    "featureType": "road",
-    "elementType": "labels",
-    "stylers": [
-      { "visibility": "off" }
-    ]
-  },                {
+                    "featureType": "road",
+                    "elementType": "labels",
+                    "stylers": [{
+                        "visibility": "off"
+                    }]
+                }, {
                     "featureType": "all",
                     "elementType": "labels.text.fill",
                     "stylers": [{
                         "color": "#ffffff"
-                    }
-                  ]
+                    }]
                 },
                 {
                     "featureType": "all",
@@ -140,51 +141,53 @@ function initMap() {
             ]
 
         });
-        // Dead code for use later
-        // var searchBox = new google.maps.places.SearchBox(
-        //     document.getElementById('search-area'));
-        // searchPlaces.bindTo('bounds', map);
-        // Bias the searchbox to within the bounds of the map.
-        // searchBox.setBounds(map.getBounds());
-        // searchBox.bindTo('bounds', map);
+    // Dead code for use later
+    // var searchBox = new google.maps.places.SearchBox(
+    //     document.getElementById('search-area'));
+    // searchPlaces.bindTo('bounds', map);
+    // Bias the searchbox to within the bounds of the map.
+    // searchBox.setBounds(map.getBounds());
+    // searchBox.bindTo('bounds', map);
 
-        // Here, we create a variable that tags the search-area input in our respective
-        // DOM.
-        var searchPlaces = new google.maps.places.Autocomplete(
-          document.getElementById('search-area')
-        );
-        // Here we define all the event listeners, clickable by the tagged
-        // buttons.
-        document.getElementById('search-area-go').addEventListener('click', function(){
-          goToArea();
-        });
+    // Here, we create a variable that tags the search-area input in our respective
+    // DOM.
+    var searchPlaces = new google.maps.places.Autocomplete(
+        document.getElementById('search-area')
+    );
+    // Here we define all the event listeners, clickable by the tagged
+    // buttons.
+    document.getElementById('search-area-go').addEventListener('click', function() {
+        goToArea();
+    });
+    document.getElementById('eat').addEventListener('click', function() {
+        query(map, foodCategoryId);
+    });
 }
 
 // We then tag the go-places button and add an eventListener to execute the
 // goToArea() function.
 
-function goToArea(){
-  var geocoder = new google.maps.Geocoder();
-  var address = document.getElementById('search-area').value;
+function goToArea() {
+    var geocoder = new google.maps.Geocoder();
+    var address = document.getElementById('search-area').value;
 
-  if (address == ""){
-    window.alert("Please enter the address.");
-  } else {
-    geocoder.geocode(
-      {
-        address: address
-      }, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-          map.setCenter(results[0].geometry.location);
-          map.setZoom(13);
-          //queryLists();
-          console.log("lat lng are: " + map.getCenter().lat() + ', ' + map.getCenter().lng())
-        } else {
-          window.alert('Could not find location, enter something more specific');
-        }
-      }
-    )};
-  }
+    if (address == "") {
+        window.alert("Please enter the address.");
+    } else {
+        geocoder.geocode({
+            address: address
+        }, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+                map.setZoom(12);
+                //queryLists();
+                console.log("lat lng are: " + map.getCenter().lat() + ', ' + map.getCenter().lng())
+            } else {
+                window.alert('Could not find location, enter something more specific');
+            }
+        })
+    };
+}
 
 // function queryLists(){
 //   // STEP 1: Id's of different categories, from foursquare.
@@ -221,55 +224,89 @@ function goToArea(){
 //     })();
 // }
 
-var Listing = function(data){
+var Listing = function(data) {
     this.name = ko.observable(data.name);
     this.address = ko.observable(data.address);
 }
-  // {
-  //   name: jsonData.response.venues[0].name,
-  //   address: jsonData.response.venues[0].location.address
-  // }
+// {
+//   name: jsonData.response.venues[0].name,
+//   address: jsonData.response.venues[0].location.address
+// }
 
-var ViewModel = function(){
-  var self = this;
-  // STEP 1: Id's of different categories, from foursquare.
-  var foodCategoryId = '4d4b7105d754a06374d81259';
-  var nightlifeCategoryId = '4d4b7105d754a06376d81259'
+var ViewModel = function() {
+    var self = this;
+    // STEP 1: Id's of different categories, from foursquare.
 
-  // Here, we create an array of category Id's to loop through and add through
-  // our models (via the number of API requests, 2 for now). STEP 2
-  var categoriesId = [foodCategoryId, nightlifeCategoryId];
-  var foodData;
-  // STEP 3: for loop for making URLs and requests for the 2 different categories
-  var foursquareUrl = "https://api.foursquare.com/v2/venues/search";
-  foursquareUrl += '?' + $.param({
-    'client_id': FOURSQUARE_CLIENT_ID,
-    'client_secret': FOURSQUARE_CLIENT_SECRET,
-    'near': "montreal",
-    'categoryId': foodCategoryId,
-    'v':"20180101"
+    // Here, we create an array of category Id's to loop through and add through
+    // our models (via the number of API requests, 2 for now). STEP 2
+    var categoriesId = [foodCategoryId, nightlifeCategoryId];
+    var foodData;
+    // STEP 3: for loop for making URLs and requests for the 2 different categories
+    var foursquareUrl = "https://api.foursquare.com/v2/venues/search";
+    foursquareUrl += '?' + $.param({
+        'client_id': FOURSQUARE_CLIENT_ID,
+        'client_secret': FOURSQUARE_CLIENT_SECRET,
+        'near': "montreal",
+        'categoryId': foodCategoryId,
+        'v': "20180101"
     });
 
-  // we store the jsonData of the food in a variable here.
-      initialFoodData = (function () {
+    // we store the jsonData of the food in a variable here.
+    initialFoodData = (function() {
         initialFoodData = null;
         $.ajax({
             'async': false,
             'global': true,
             'url': foursquareUrl,
             'dataType': "json",
-            'success': function (data) {
+            'success': function(data) {
                 initialFoodData = data;
                 initialFoodListings = initialFoodData.response.venues;
             }
         });
         return initialFoodData;
     })();
-  this.initialFoodList = ko.observableArray([]);
-  initialFoodListings.forEach(function(foodItem){
-    self.initialFoodList.push(new Listing(foodItem));
-  })
+    this.list = ko.observableArray([]);
+    initialFoodListings.forEach(function(foodItem) {
+        self.list.push(new Listing(foodItem));
+    });
 
+
+}
+
+function query(map, categoryId){
+  var viewModel = new ViewModel();
+  console.log("Querying...");
+  var foursquareUrl = "https://api.foursquare.com/v2/venues/search";
+  foursquareUrl += '?' + $.param({
+      'client_id': FOURSQUARE_CLIENT_ID,
+      'client_secret': FOURSQUARE_CLIENT_SECRET,
+      'll': map.getCenter().lat() + ', ' + map.getCenter().lng(),
+      'categoryId': categoryId,
+      'v': "20180101"
+  });
+  console.log(map.getCenter().lat() + ', ' + map.getCenter().lng());
+
+  // we store the jsonData of the food in a variable here.
+  var jsonData = (function() {
+      var jsonData = null;
+      $.ajax({
+          'async': false,
+          'global': true,
+          'url': foursquareUrl,
+          'dataType': "json",
+          'success': function(data) {
+              jsonData = data;
+          }
+      });
+      return jsonData;
+  })();
+  var listings = initialFoodData.response.venues;
+  console.log("removing all data first, then repopulating");
+  self.list.removeAll();
+  listings.forEach(function(item) {
+    self.list.push(new Listing(item));
+  })
 
 }
 
