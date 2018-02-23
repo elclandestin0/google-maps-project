@@ -158,9 +158,6 @@ function initMap() {
         document.getElementById('search-area-go').addEventListener('click', function(){
           goToArea();
         });
-        document.getElementById('nightlife').addEventListener('click', function(){
-          queryNightLife();
-        });
 }
 
 // We then tag the go-places button and add an eventListener to execute the
@@ -254,23 +251,23 @@ var ViewModel = function(){
     });
 
   // we store the jsonData of the food in a variable here.
-      jsonData = (function () {
-        jsonData = null;
+      initialFoodData = (function () {
+        initialFoodData = null;
         $.ajax({
             'async': false,
             'global': true,
             'url': foursquareUrl,
             'dataType': "json",
             'success': function (data) {
-                jsonData = data;
-                foodListings = jsonData.response.venues;
+                initialFoodData = data;
+                initialFoodListings = initialFoodData.response.venues;
             }
         });
-        return jsonData;
+        return initialFoodData;
     })();
-  this.foodList = ko.observableArray([]);
-  foodListings.forEach(function(foodItem){
-    self.foodList.push(new Listing(foodItem));
+  this.initialFoodList = ko.observableArray([]);
+  initialFoodListings.forEach(function(foodItem){
+    self.initialFoodList.push(new Listing(foodItem));
   })
 
 

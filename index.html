@@ -33,7 +33,7 @@
               <a class="nav-link" href="#"><strong>top-sights</strong></a>
             </li>
           </ul>
-          <div class="list-group" data-bind="foreach: foodList">
+          <div class="list-group" data-bind="foreach: initialFoodList">
             <button class="light-blue list-group-item list-group-item-action" data-bind="text: name"></buttoni>
           </div>
           <!-- <hr> -->
@@ -60,7 +60,6 @@
         src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyDGi1sF4Ten1ctxC4bgjI_bPOkaAW89F50&v=3&callback=initMap"></script>
     <script src="js/lib/knockout-3.4.2.js"></script>
     <script src="js/map.js"></script>
-    <script src="js/listings.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </body>
