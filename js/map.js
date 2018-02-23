@@ -188,24 +188,3 @@ function goToArea(){
       }
     )};
   }
-
-function queryNightLife(){
-  var foursquareUrl = "https://api.foursquare.com/v2/venues/search";
-  foursquareUrl += '?' + $.param({
-    'client_id': FOURSQUARE_CLIENT_ID,
-    'client_secret': FOURSQUARE_CLIENT_SECRET,
-    'near':'montreal',
-    'categoryId':'4d4b7105d754a06376d81259',
-    'v':"20180101"
-  });
-
-  $.ajax({
-    url: foursquareUrl,
-    dataType: 'json',
-         success: function(data){
-           for (var i = 0; i < data.response.venues.length; i++){
-             console.log(data.response.venues[i]);
-           }
-         }
-  });
-}

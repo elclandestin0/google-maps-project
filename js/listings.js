@@ -12,7 +12,7 @@ foursquareUrl += '?' + $.param({
   'client_id': FOURSQUARE_CLIENT_ID,
   'client_secret': FOURSQUARE_CLIENT_SECRET,
   'near':'montreal',
-  'categoryId': foodCategoryId,
+  'categoryId': nightlifeCategoryId,
   'v':"20180101"
   });
 
