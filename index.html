@@ -33,6 +33,16 @@
               <a class="nav-link" href="#"><strong>top-sights</strong></a>
             </li>
           </ul>
+          <div id="list-example" class="list-group">
+  <a class="list-group-item list-group-item-action" href="#list-item-1">Item 1</a>
+  <a class="list-group-item list-group-item-action" href="#list-item-2">Item2</a>
+  <a class="list-group-item list-group-item-action" href="#list-item-3">Item 3</a>
+  <a class="list-group-item list-group-item-action" href="#list-item-4">Item 4</a>
+</div>
+
+          <ul data-bind="foreach: foodList">
+            <li data-bind="text: name"></li>
+          </ul>
           <!-- <hr> -->
           <!-- <div data-bind="with: currentListing">
             <div data-bind="text: name"></div>
