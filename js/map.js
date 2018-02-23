@@ -162,6 +162,9 @@ function initMap() {
     document.getElementById('eat').addEventListener('click', function() {
         query(map, foodCategoryId);
     });
+    document.getElementById('nightlife').addEventListener('click', function() {
+        query(map, nightlifeCategoryId);
+    });
 }
 
 // We then tag the go-places button and add an eventListener to execute the
@@ -277,8 +280,8 @@ var ViewModel = function() {
 function query(map, categoryId){
   var viewModel = new ViewModel();
   console.log("Querying...");
-  var foursquareUrl = "https://api.foursquare.com/v2/venues/search";
-  foursquareUrl += '?' + $.param({
+  var url = "https://api.foursquare.com/v2/venues/search";
+  url += '?' + $.param({
       'client_id': FOURSQUARE_CLIENT_ID,
       'client_secret': FOURSQUARE_CLIENT_SECRET,
       'll': map.getCenter().lat() + ', ' + map.getCenter().lng(),
@@ -293,7 +296,7 @@ function query(map, categoryId){
       $.ajax({
           'async': false,
           'global': true,
-          'url': foursquareUrl,
+          'url': url,
           'dataType': "json",
           'success': function(data) {
               jsonData = data;
@@ -301,13 +304,18 @@ function query(map, categoryId){
       });
       return jsonData;
   })();
-  var listings = initialFoodData.response.venues;
-  console.log("removing all data first, then repopulating");
-  self.list.removeAll();
-  listings.forEach(function(item) {
-    self.list.push(new Listing(item));
-  })
-
+  var listings = jsonData.response.venues;
+  console.log(listings);
+  if (listings.length == 0){
+    window.alert("No listings found! Try changing the area.");
+  }
+  else {
+    console.log("removing all data first, then repopulating");
+    self.list.removeAll();
+    listings.forEach(function(item) {
+      self.list.push(new Listing(item));
+    })
+  }
 }
 
 ko.applyBindings(ViewModel());
