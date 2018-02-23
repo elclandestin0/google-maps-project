@@ -1,5 +1,7 @@
 // Initialize global variables here.
 var map;
+var jsonData;
+var foodListings;
 FOURSQUARE_CLIENT_ID = "IGSBB23NYXAIMP5CO1OVV4M3DSR5PFCMDYF5UAWHSRKK4AJH";
 FOURSQUARE_CLIENT_SECRET = "H3S03FQBEVV3YCRRORCQLG4TFKQYWM00POWVXAUQZCNVWGF3";
 
@@ -159,10 +161,6 @@ function initMap() {
         document.getElementById('nightlife').addEventListener('click', function(){
           queryNightLife();
         });
-
-
-
-
 }
 
 // We then tag the go-places button and add an eventListener to execute the
@@ -182,9 +180,100 @@ function goToArea(){
         if (status == google.maps.GeocoderStatus.OK) {
           map.setCenter(results[0].geometry.location);
           map.setZoom(13);
+          //queryLists();
+          console.log("lat lng are: " + map.getCenter().lat() + ', ' + map.getCenter().lng())
         } else {
           window.alert('Could not find location, enter something more specific');
         }
       }
     )};
   }
+
+// function queryLists(){
+//   // STEP 1: Id's of different categories, from foursquare.
+//   var foodCategoryId = '4d4b7105d754a06374d81259';
+//   var nightlifeCategoryId = '4d4b7105d754a06376d81259'
+//
+//   // Here, we create an array of category Id's to loop through and add through
+//   // our models (via the number of API requests, 2 for now). STEP 2
+//   var categoriesId = [foodCategoryId, nightlifeCategoryId];
+//   var foodData;
+//   // STEP 3: for loop for making URLs and requests for the 2 different categories
+//   var foursquareUrl = "https://api.foursquare.com/v2/venues/search";
+//   foursquareUrl += '?' + $.param({
+//     'client_id': FOURSQUARE_CLIENT_ID,
+//     'client_secret': FOURSQUARE_CLIENT_SECRET,
+//     'll': map.getCenter().lat() + ', ' + map.getCenter().lng(),
+//     'categoryId': foodCategoryId,
+//     'v':"20180101"
+//     });
+//
+//   // we store the jsonData of the food in a variable here.
+//       jsonData = (function () {
+//         jsonData = null;
+//         $.ajax({
+//             'async': false,
+//             'global': true,
+//             'url': foursquareUrl,
+//             'dataType': "json",
+//             'success': function (data) {
+//                 jsonData = data;
+//             }
+//         });
+//         return jsonData;
+//     })();
+// }
+
+var Listing = function(data){
+    this.name = ko.observable(data.name);
+    this.address = ko.observable(data.address);
+}
+  // {
+  //   name: jsonData.response.venues[0].name,
+  //   address: jsonData.response.venues[0].location.address
+  // }
+
+var ViewModel = function(){
+  var self = this;
+  // STEP 1: Id's of different categories, from foursquare.
+  var foodCategoryId = '4d4b7105d754a06374d81259';
+  var nightlifeCategoryId = '4d4b7105d754a06376d81259'
+
+  // Here, we create an array of category Id's to loop through and add through
+  // our models (via the number of API requests, 2 for now). STEP 2
+  var categoriesId = [foodCategoryId, nightlifeCategoryId];
+  var foodData;
+  // STEP 3: for loop for making URLs and requests for the 2 different categories
+  var foursquareUrl = "https://api.foursquare.com/v2/venues/search";
+  foursquareUrl += '?' + $.param({
+    'client_id': FOURSQUARE_CLIENT_ID,
+    'client_secret': FOURSQUARE_CLIENT_SECRET,
+    'near': "montreal",
+    'categoryId': foodCategoryId,
+    'v':"20180101"
+    });
+
+  // we store the jsonData of the food in a variable here.
+      jsonData = (function () {
+        jsonData = null;
+        $.ajax({
+            'async': false,
+            'global': true,
+            'url': foursquareUrl,
+            'dataType': "json",
+            'success': function (data) {
+                jsonData = data;
+                foodListings = jsonData.response.venues;
+            }
+        });
+        return jsonData;
+    })();
+  this.foodList = ko.observableArray([]);
+  foodListings.forEach(function(foodItem){
+    self.foodList.push(new Listing(foodItem));
+  })
+
+
+}
+
+ko.applyBindings(ViewModel());
