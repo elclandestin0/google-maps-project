@@ -2,7 +2,7 @@
 var map;
 var jsonData;
 var foodListings;
-var markers;
+//var markers = [];
 FOURSQUARE_CLIENT_ID = "IGSBB23NYXAIMP5CO1OVV4M3DSR5PFCMDYF5UAWHSRKK4AJH";
 FOURSQUARE_CLIENT_SECRET = "H3S03FQBEVV3YCRRORCQLG4TFKQYWM00POWVXAUQZCNVWGF3";
 var foodCategoryId = '4d4b7105d754a06374d81259';
@@ -166,6 +166,7 @@ function initMap() {
     document.getElementById('nightlife').addEventListener('click', function() {
         query(map, nightlifeCategoryId);
     });
+    ko.applyBindings(ViewModel());
 }
 
 // We then tag the go-places button and add an eventListener to execute the
@@ -194,8 +195,10 @@ function goToArea() {
 }
 
 var Listing = function(data) {
+    var self = this;
     this.name = ko.observable(data.name);
     this.address = ko.observable(data.address);
+    this.marker = ko.observable();
 }
 
 var ViewModel = function() {
@@ -234,8 +237,12 @@ var ViewModel = function() {
     this.list = ko.observableArray([]);
     initialFoodListings.forEach(function(foodItem) {
         self.list.push(new Listing(foodItem));
+          marker = new google.maps.Marker({
+          map: map,
+          position: {lat: foodItem.location.lat, lng: foodItem.location.lng},
+          animation: google.maps.Animation.DROP
+        })
     });
-
 
 }
 
@@ -279,5 +286,3 @@ function query(map, categoryId){
     })
   }
 }
-
-ko.applyBindings(ViewModel());
