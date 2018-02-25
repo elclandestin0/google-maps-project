@@ -152,6 +152,8 @@ function initMap() {
     document.getElementById('search-area-go').addEventListener('click', function() {
         goToArea();
     });
+    // for each icon, we add a click listener to filter searches into that
+    // category
     document.getElementById('eat').addEventListener('click', function() {
         query(map, foodCategoryId);
     });
@@ -163,7 +165,6 @@ function initMap() {
 
 // We then tag the go-places button and add an eventListener to execute the
 // goToArea() function.
-
 function goToArea() {
     var geocoder = new google.maps.Geocoder();
     var address = document.getElementById('search-area').value;
@@ -185,6 +186,8 @@ function goToArea() {
     };
 }
 
+// this is our listing model. It contains attributes such as name, address, and
+// marker
 var Listing = function(data) {
     var self = this;
     this.name = ko.observable(data.name);
@@ -194,14 +197,11 @@ var Listing = function(data) {
 
 var ViewModel = function() {
     var self = this;
-    // STEP 1: Id's of different categories, from foursquare.
-
-    // Here, we create an array of category Id's to loop through and add through
-    // our models (via the number of API requests, 2 for now). STEP 2
-    var categoriesId = [foodCategoryId, nightlifeCategoryId];
     var foodData;
     var infoWindow = new google.maps.InfoWindow();
-    // STEP 3: for loop for making URLs and requests for the 2 different categories
+
+    // For our initial data, we first construct the url from the Foursquare api,
+    // which contains a HTTP GET request to the food category.
     var foursquareUrl = "https://api.foursquare.com/v2/venues/search";
     foursquareUrl += '?' + $.param({
         'client_id': FOURSQUARE_CLIENT_ID,
@@ -211,7 +211,8 @@ var ViewModel = function() {
         'v': "20180101"
     });
 
-    // we store the jsonData of the food in a variable here.
+    // Using the URL we just created, we send an AJAX request and attach it into
+    // a JSON variable, if it's successful. 
     initialFoodData = (function() {
         initialFoodData = null;
         $.ajax({
