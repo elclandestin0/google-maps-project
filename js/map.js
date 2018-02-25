@@ -2,7 +2,7 @@
 var map;
 var jsonData;
 var foodListings;
-//var markers = [];
+var markers = [];
 FOURSQUARE_CLIENT_ID = "IGSBB23NYXAIMP5CO1OVV4M3DSR5PFCMDYF5UAWHSRKK4AJH";
 FOURSQUARE_CLIENT_SECRET = "H3S03FQBEVV3YCRRORCQLG4TFKQYWM00POWVXAUQZCNVWGF3";
 var foodCategoryId = '4d4b7105d754a06374d81259';
@@ -142,14 +142,6 @@ function initMap() {
             ]
 
         });
-    // Dead code for use later
-    // var searchBox = new google.maps.places.SearchBox(
-    //     document.getElementById('search-area'));
-    // searchPlaces.bindTo('bounds', map);
-    // Bias the searchbox to within the bounds of the map.
-    // searchBox.setBounds(map.getBounds());
-    // searchBox.bindTo('bounds', map);
-
     // Here, we create a variable that tags the search-area input in our respective
     // DOM.
     var searchPlaces = new google.maps.places.Autocomplete(
@@ -184,8 +176,7 @@ function goToArea() {
         }, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 map.setCenter(results[0].geometry.location);
-                map.setZoom(12);
-                //queryLists();
+                map.setZoom(14);
                 console.log("lat lng are: " + map.getCenter().lat() + ', ' + map.getCenter().lng())
             } else {
                 window.alert('Could not find location, enter something more specific');
@@ -237,17 +228,24 @@ var ViewModel = function() {
     this.list = ko.observableArray([]);
     initialFoodListings.forEach(function(foodItem) {
         self.list.push(new Listing(foodItem));
-          marker = new google.maps.Marker({
-          map: map,
-          position: {lat: foodItem.location.lat, lng: foodItem.location.lng},
-          animation: google.maps.Animation.DROP
-        })
+        markers.push(marker = new google.maps.Marker({
+        map: map,
+        position: {lat: foodItem.location.lat, lng: foodItem.location.lng},
+        animation: google.maps.Animation.DROP
+      }))
     });
-
 }
 
+function removeMarkers(){
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(null);
+  }
+}
+
+// this function queries for the model in the list. Each click of a button
+// initializes a new API request and parses it onto the model.
 function query(map, categoryId){
-  var viewModel = new ViewModel();
+  //var viewModel = new ViewModel();
   console.log("Querying...");
   var url = "https://api.foursquare.com/v2/venues/search";
   url += '?' + $.param({
@@ -257,9 +255,10 @@ function query(map, categoryId){
       'categoryId': categoryId,
       'v': "20180101"
   });
+  // Testing console if data is successfully encoded
   console.log(map.getCenter().lat() + ', ' + map.getCenter().lng());
 
-  // we store the jsonData of the food in a variable here.
+  // we store the jsonData of the queried category in a variable here.
   var jsonData = (function() {
       var jsonData = null;
       $.ajax({
@@ -274,15 +273,19 @@ function query(map, categoryId){
       return jsonData;
   })();
   var listings = jsonData.response.venues;
-  console.log(listings);
   if (listings.length == 0){
     window.alert("No listings found! Try changing the area.");
-  }
-  else {
+  } else {
     console.log("removing all data first, then repopulating");
     self.list.removeAll();
+    removeMarkers();
     listings.forEach(function(item) {
       self.list.push(new Listing(item));
+      markers.push(marker = new google.maps.Marker({
+      map: map,
+      position: {lat: item.location.lat, lng: item.location.lng},
+      animation: google.maps.Animation.DROP
+    }))
     })
   }
 }

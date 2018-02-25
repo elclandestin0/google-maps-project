@@ -6,6 +6,10 @@ body {
   padding: 0;
 }
 
+.list-group {
+  color: yellow;
+}
+
 .white {
   color: #ffffff;
 }
@@ -21,6 +25,10 @@ body {
 
 .line-color {
   color: #
+}
+
+.full-width {
+  width: 80%;
 }
 
 .main-app {

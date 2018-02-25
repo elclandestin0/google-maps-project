@@ -4,6 +4,7 @@
       <meta name="author" content="memo khoury">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
       <link rel="stylesheet" href="css/styles.css">
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
    </head>
@@ -18,19 +19,19 @@
             <div class="row">
                <ul class="nav nav-tabs" id="places">
                   <li class="nav-item" id="nightlife">
-                     <a class="nav-link active" href="#"><i class="fa fa-glass-martini fa-2x"></i></a>
+                     <a class="nav-link active" href="#"><i class="fa fa-glass fa-2x"></i></a>
                   </li>
                   <li class="nav-item" id="eat">
-                     <a class="nav-link" href="#"><strong>eat</strong></a>
+                     <a class="nav-link" href="#"><i class="fa fa-utensil-fork fa-2x"></i></a>
                   </li>
                   <li class="nav-item" id="festivals">
                      <a class="nav-link" href="#"><strong>festivals</strong></a>
                   </li>
                   <li class="nav-item" id="landmarks">
-                     <a class="nav-link" href="#"><strong>landmarks</strong></a>
+                     <a class="nav-link" href="#"><i class="fa fa-globe fa-2x"></i></a>
                   </li>
                   <li class="nav-item" id="top-sights">
-                     <a class="nav-link" href="#"><strong>top-sights</strong></a>
+                     <a class="nav-link" href="#"></a>
                   </li>
                </ul>
                <div class="list-group" data-bind="foreach: list">
@@ -42,8 +43,8 @@
                   </div> -->
             </div>
             <div class="row">
-               <span class="white">where do you live?</span>
-               <input id="search-area" type="text" placeholder="Ex: Pizza delivery in NYC">
+               <span class="white">where do you live?</span> <br>
+               <input id="search-area" class="full-width" type="text" placeholder="Ex: Pizza delivery in NYC">
                <input id="search-area-go" type="button" value="Go">
             </div>
          </div>
