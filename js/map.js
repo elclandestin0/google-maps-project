@@ -248,7 +248,8 @@ var ViewModel = function() {
 function populateInfoWindow(item, marker, infoWindow){
   console.log("Successful click!");
   // clear infowindow content First
-  infoWindow.setContent('<div>' + item.name + '</div>');
+  infoWindow.setContent('<div>' + item.name + '</div>' +
+    '<div> Data powered by <a href="https://developer.foursquare.com/"> Foursquare </a></div>');
   infoWindow.open(map, marker);
 }
 
