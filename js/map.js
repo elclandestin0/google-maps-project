@@ -6,7 +6,7 @@ var markers = [];
 FOURSQUARE_CLIENT_ID = "IGSBB23NYXAIMP5CO1OVV4M3DSR5PFCMDYF5UAWHSRKK4AJH";
 FOURSQUARE_CLIENT_SECRET = "H3S03FQBEVV3YCRRORCQLG4TFKQYWM00POWVXAUQZCNVWGF3";
 var foodCategoryId = '4d4b7105d754a06374d81259';
-var nightlifeCategoryId = '4d4b7105d754a06376d81259'
+var nightlifeCategoryId = '4d4b7105d754a06376d81259';
 
 function initMap() {
     // Here, we create a new Maps instance from the Google Maps API and set the
@@ -200,6 +200,7 @@ var ViewModel = function() {
     // our models (via the number of API requests, 2 for now). STEP 2
     var categoriesId = [foodCategoryId, nightlifeCategoryId];
     var foodData;
+    var infoWindow = new google.maps.InfoWindow();
     // STEP 3: for loop for making URLs and requests for the 2 different categories
     var foursquareUrl = "https://api.foursquare.com/v2/venues/search";
     foursquareUrl += '?' + $.param({
@@ -225,15 +226,30 @@ var ViewModel = function() {
         });
         return initialFoodData;
     })();
-    this.list = ko.observableArray([]);
+    self.list = ko.observableArray([]);
+    var infoWindow = new google.maps.InfoWindow();
     initialFoodListings.forEach(function(foodItem) {
-        self.list.push(new Listing(foodItem));
+        self.list().push(new Listing(foodItem))
         markers.push(marker = new google.maps.Marker({
-        map: map,
-        position: {lat: foodItem.location.lat, lng: foodItem.location.lng},
-        animation: google.maps.Animation.DROP
-      }))
+          map: map,
+          position: {lat: foodItem.location.lat, lng: foodItem.location.lng},
+          animation: google.maps.Animation.DROP
+        }))
+        marker.addListener('click', function(){
+          populateInfoWindow(foodItem, this, infoWindow);
+        })
     });
+    console.log(self.list);
+    if (self.list == null){
+      window.alert("Data did not load! Please try again.")
+    }
+}
+
+function populateInfoWindow(item, marker, infoWindow){
+  console.log("Successful click!");
+  // clear infowindow content First
+  infoWindow.setContent('<div>' + item.name + '</div>');
+  infoWindow.open(map, marker);
 }
 
 function removeMarkers(){

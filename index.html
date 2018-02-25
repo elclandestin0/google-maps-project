@@ -17,36 +17,34 @@
                <h4 class="white"> what's good in the 'hood? </h4>
             </div>
             <div class="row">
+               <span class="white">where do you live?</span> <br>
+               <input id="search-area" class="full-width" type="text" placeholder="Montreal, QC">
+               <input id="search-area-go" type="button" value="Go">
+            </div>
+            <div class="row">
                <ul class="nav nav-tabs" id="places">
                   <li class="nav-item" id="nightlife">
                      <a class="nav-link active" href="#"><i class="fa fa-glass fa-2x"></i></a>
                   </li>
                   <li class="nav-item" id="eat">
-                     <a class="nav-link" href="#"><i class="fa fa-utensil-fork fa-2x"></i></a>
+                     <a class="nav-link" href="#"><i class="fa fa-cutlery fa-2x"></i></a>
                   </li>
-                  <li class="nav-item" id="festivals">
-                     <a class="nav-link" href="#"><strong>festivals</strong></a>
+                  <li class="nav-item" id="top-sights">
+                     <a class="nav-link" href="#"><i class="fa fa-eye fa-2x"></i></a>
                   </li>
                   <li class="nav-item" id="landmarks">
                      <a class="nav-link" href="#"><i class="fa fa-globe fa-2x"></i></a>
                   </li>
-                  <li class="nav-item" id="top-sights">
-                     <a class="nav-link" href="#"></a>
-                  </li>
                </ul>
                <div class="list-group" data-bind="foreach: list">
-                  <button class="light-blue list-group-item list-group-item-action" data-bind="text: name"></buttoni>
+                  <button class="light-blue list-group-item list-group-item-action" data-bind="text: name"></button>
                </div>
                <!-- <hr> -->
                <!-- <div data-bind="with: currentListing">
                   <div data-bind="text: name"></div>
                   </div> -->
             </div>
-            <div class="row">
-               <span class="white">where do you live?</span> <br>
-               <input id="search-area" class="full-width" type="text" placeholder="Ex: Pizza delivery in NYC">
-               <input id="search-area-go" type="button" value="Go">
-            </div>
+
          </div>
          <!-- End Listings -->
          <!-- Begin Map -->
