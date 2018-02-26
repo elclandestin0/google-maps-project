@@ -7,6 +7,7 @@ FOURSQUARE_CLIENT_ID = "IGSBB23NYXAIMP5CO1OVV4M3DSR5PFCMDYF5UAWHSRKK4AJH";
 FOURSQUARE_CLIENT_SECRET = "H3S03FQBEVV3YCRRORCQLG4TFKQYWM00POWVXAUQZCNVWGF3";
 var foodCategoryId = '4d4b7105d754a06374d81259';
 var nightlifeCategoryId = '4d4b7105d754a06376d81259';
+var gymCategoryId = "4bf58dd8d48988d175941735";
 
 function initMap() {
     // Here, we create a new Maps instance from the Google Maps API and set the
@@ -142,6 +143,13 @@ function initMap() {
             ]
 
         });
+    var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+    var mapCenterPoint = new google.maps.Marker({
+      map: map,
+      position: map.getCenter(),
+      animation: google.maps.Animation.DROP,
+      icon: iconBase + "img/632503-compass_wind_rose-512.png"
+    })
     // Here, we create a variable that tags the search-area input in our respective
     // DOM.
     var searchPlaces = new google.maps.places.Autocomplete(
@@ -159,6 +167,9 @@ function initMap() {
     });
     document.getElementById('nightlife').addEventListener('click', function() {
         query(map, nightlifeCategoryId);
+    });
+    document.getElementById('gym').addEventListener('click', function() {
+        query(map, gymCategoryId);
     });
     ko.applyBindings(ViewModel());
 }
@@ -255,10 +266,19 @@ function removeMarkers(){
 
 function populateInfoWindow(item, marker, infoWindow){
   console.log("Successful click!");
+  if (item.url == null){
+    infoWindow.setContent('<div>' + item.name + '</div>' +
+      '<div> Data powered by <a href="https://developer.foursquare.com/"> Foursquare </a></div>' +
+      '<div><strong>Note:</strong> no URL available from Foursquare. </div>');
+    infoWindow.open(map, marker);
+  }
+  else {
+    infoWindow.setContent('<div><a href="'+item.url+'">' + item.name + '</a></div>' +
+      '<div> Data powered by <a href="https://developer.foursquare.com/"> Foursquare </a></div>');
+    infoWindow.open(map, marker);
+  }
   // clear infowindow content First
-  infoWindow.setContent('<div><a href="'+item.url+'">' + item.name + '</a></div>' +
-    '<div> Data powered by <a href="https://developer.foursquare.com/"> Foursquare </a></div>');
-  infoWindow.open(map, marker);
+
 }
 
 
