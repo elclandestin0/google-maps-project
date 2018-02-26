@@ -212,7 +212,7 @@ var ViewModel = function() {
     });
 
     // Using the URL we just created, we send an AJAX request and attach it into
-    // a JSON variable, if it's successful. 
+    // a JSON variable, if it's successful.
     initialFoodData = (function() {
         initialFoodData = null;
         $.ajax({
@@ -246,6 +246,12 @@ var ViewModel = function() {
     }
 }
 
+function removeMarkers(){
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(null);
+  }
+}
+
 function populateInfoWindow(item, marker, infoWindow){
   console.log("Successful click!");
   // clear infowindow content First
@@ -254,16 +260,12 @@ function populateInfoWindow(item, marker, infoWindow){
   infoWindow.open(map, marker);
 }
 
-function removeMarkers(){
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(null);
-  }
-}
 
 // this function queries for the model in the list. Each click of a button
 // initializes a new API request and parses it onto the model.
 function query(map, categoryId){
-  //var viewModel = new ViewModel();
+  var viewModel = new ViewModel();
+  var infoWindow = new google.maps.InfoWindow();
   console.log("Querying...");
   var url = "https://api.foursquare.com/v2/venues/search";
   url += '?' + $.param({
@@ -300,10 +302,13 @@ function query(map, categoryId){
     listings.forEach(function(item) {
       self.list.push(new Listing(item));
       markers.push(marker = new google.maps.Marker({
-      map: map,
-      position: {lat: item.location.lat, lng: item.location.lng},
-      animation: google.maps.Animation.DROP
-    }))
+        map: map,
+        position: {lat: item.location.lat, lng: item.location.lng},
+        animation: google.maps.Animation.DROP
+      }))
+      marker.addListener('click', function(){
+        populateInfoWindow(item, this, infoWindow);
+      })
     })
   }
 }
