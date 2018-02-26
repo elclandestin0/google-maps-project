@@ -227,6 +227,7 @@ var ViewModel = function() {
         });
         return initialFoodData;
     })();
+    console.log(initialFoodData);
     self.list = ko.observableArray([]);
     var infoWindow = new google.maps.InfoWindow();
     initialFoodListings.forEach(function(foodItem) {
@@ -255,7 +256,7 @@ function removeMarkers(){
 function populateInfoWindow(item, marker, infoWindow){
   console.log("Successful click!");
   // clear infowindow content First
-  infoWindow.setContent('<div>' + item.name + '</div>' +
+  infoWindow.setContent('<div><a href="'+item.url+'">' + item.name + '</a></div>' +
     '<div> Data powered by <a href="https://developer.foursquare.com/"> Foursquare </a></div>');
   infoWindow.open(map, marker);
 }
