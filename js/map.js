@@ -264,7 +264,7 @@ function populateInfoWindow(item, marker, infoWindow){
   // was no URL found. Else, set hyperlink of URL on the title of the venue.
   if (item.url == null){
     infoWindow.setContent('<div>' + item.name + '</div>' +
-      '<div> Data powered by <a href="https://developer.foursquare.com/"> Foursquare </a></div>' +
+      '<div> Data powered by <a href="https://developer.foursquare.com/"><i class="fab fa-foursquare fa-1x"></i>oursquare</a></div>' +
       '<div><strong>Address:</strong> ' + item.location.address +'</div>' +
       '<div><strong>Note:</strong> no URL available from Foursquare. </div>');
     infoWindow.open(map, marker);
@@ -274,7 +274,7 @@ function populateInfoWindow(item, marker, infoWindow){
   else {
     infoWindow.setContent('<div><a href="'+item.url+'">' + item.name + '</a></div>' +
       '<div><strong>Address:</strong> ' + item.location.address +'</div>' +
-      '<div> Data powered by <a href="https://developer.foursquare.com/"><i class="fab fa-foursquare fa-1x"></i></a></div>');
+      '<div> Data powered by <a href="https://developer.foursquare.com/"><i class="fab fa-foursquare fa-1x"></i>oursquare</a></div>');
     infoWindow.open(map, marker);
     marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function(){ marker.setAnimation(null); }, 1400);
@@ -333,10 +333,3 @@ function query(map, categoryId){
     })
   }
 }
-
-// $(window).resize(function () {
-//     var h = $(window).height(),
-//         offsetTop = 60; // Calculate the top offset
-//
-//     $('#map').css('height', (h - offsetTop));
-// }).resize();
