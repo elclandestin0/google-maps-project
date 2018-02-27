@@ -176,7 +176,7 @@ function goToArea() {
     var geocoder = new google.maps.Geocoder();
     var address = document.getElementById('search-area').value;
 
-    if (address == "") {
+    if (address === "") {
         window.alert("Please enter the address.");
     } else {
         geocoder.geocode({
@@ -185,12 +185,12 @@ function goToArea() {
             if (status == google.maps.GeocoderStatus.OK) {
                 map.setCenter(results[0].geometry.location);
                 map.setZoom(14);
-                console.log("lat lng are: " + map.getCenter().lat() + ', ' + map.getCenter().lng())
+                console.log("lat lng are: " + map.getCenter().lat() + ', ' + map.getCenter().lng());
             } else {
                 window.alert('Could not find location, enter something more specific');
             }
-        })
-    };
+        });
+    }
 }
 
 // This is our listing model. It contains attributes such as name, address, and
@@ -200,7 +200,7 @@ var Listing = function(data) {
     this.name = ko.observable(data.name);
     this.address = ko.observable(data.address);
     this.marker = ko.observable();
-}
+};
 
 var ViewModel = function() {
     var self = this;
@@ -235,23 +235,23 @@ var ViewModel = function() {
     })();
     //console.log(initialFoodData);
     self.list = ko.observableArray([]);
-    var infoWindow = new google.maps.InfoWindow();
+    infoWindow = new google.maps.InfoWindow();
     initialFoodListings.forEach(function(foodItem) {
-        self.list().push(new Listing(foodItem))
+        self.list().push(new Listing(foodItem));
         markers.push(marker = new google.maps.Marker({
           map: map,
           position: {lat: foodItem.location.lat, lng: foodItem.location.lng},
           animation: google.maps.Animation.DROP
-        }))
+        }));
         marker.addListener('click', function(){
           populateInfoWindow(foodItem, this, infoWindow);
-        })
+        });
     });
     //console.log(self.list);
-    if (self.list == null){
-      window.alert("Data did not load! Please try again.")
+    if (self.list === null){
+      window.alert("Data did not load! Please try again.");
     }
-}
+};
 
 function removeMarkers(){
   for (var i = 0; i < markers.length; i++) {
@@ -262,7 +262,7 @@ function removeMarkers(){
 function populateInfoWindow(item, marker, infoWindow){
   // if url is not found in the venue, display note on the bottom saying there
   // was no URL found. Else, set hyperlink of URL on the title of the venue.
-  if (item.url == null){
+  if (item.url === null){
     infoWindow.setContent('<div>' + item.name + '</div>' +
       '<div> Data powered by <a href="https://developer.foursquare.com/"><i class="fab fa-foursquare fa-1x"></i>oursquare</a></div>' +
       '<div><strong>Address:</strong> ' + item.location.address +'</div>' +
@@ -314,7 +314,7 @@ function query(map, categoryId){
   })();
   // we create a new list of the venues, based on our query
   var listings = jsonData.response.venues;
-  if (listings.length == 0){
+  if (listings.length === 0){
     window.alert("No listings found! Try changing the area.");
   } else {
     console.log("removing all data first, then repopulating");
@@ -326,10 +326,10 @@ function query(map, categoryId){
         map: map,
         position: {lat: item.location.lat, lng: item.location.lng},
         animation: google.maps.Animation.DROP
-      }))
+      }));
       marker.addListener('click', function(){
         populateInfoWindow(item, this, infoWindow);
-      })
-    })
+      });
+    });
   }
 }
