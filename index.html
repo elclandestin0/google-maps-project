@@ -4,7 +4,7 @@
       <meta name="author" content="memo khoury">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
       <link rel="stylesheet" href="css/styles.css">
-      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+      <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
    </head>
@@ -24,27 +24,27 @@
             <div class="row">
                <ul class="nav nav-tabs" id="places">
                   <li class="nav-item" id="nightlife">
-                     <a class="nav-link active" href="#"><i class="fa fa-glass fa-2x"></i></a>
+                     <a class="nav-link active" href="#"><i class="fa fa-glass-martini fa-2x"></i></a>
                   </li>
                   <li class="nav-item" id="eat">
-                     <a class="nav-link" href="#"><i class="fa fa-cutlery fa-2x"></i></a>
+                     <a class="nav-link" href="#"><i class="fa fa-utensils fa-2x"></i></a>
                   </li>
                   <li class="nav-item" id="gym">
-                     <a class="nav-link" href="#"><h5>gym</h5></a>
-                  </li>
-                  <li class="nav-item" id="landmarks">
-                     <a class="nav-link" href="#"><i class="fa fa-globe fa-2x"></i></a>
+                     <a class="nav-link" href="#">
+                        <i class="fa fa-volleyball-ball fa-2x"></i>
+                     </a>
                   </li>
                </ul>
                <div class="list-group" data-bind="foreach: list">
                   <button class="light-blue list-group-item list-group-item-action" data-bind="text: name"></button>
                </div>
-               <!-- <hr> -->
-               <!-- <div data-bind="with: currentListing">
-                  <div data-bind="text: name"></div>
-                  </div> -->
             </div>
-
+            <div class="row">
+              <h6 class="white">Powered by<br><br>
+                <a href="https://developer.foursquare.com/"><i class="fab fa-foursquare fa-1x"></i>oursquare</a>
+                <a href="https://developers.google.com/maps/"><i class="fab fa-google fa-1x"></i>oogle</a>
+              </h6>
+            </div>
          </div>
          <!-- End Listings -->
          <!-- Begin Map -->

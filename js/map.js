@@ -149,7 +149,7 @@ function initMap() {
     // The searchPlaces input text-box has a google places API autocomplete
     // functionality implemented to find all available areas in the text box.
     var searchPlaces = new google.maps.places.Autocomplete(
-        document.getElementById('search-area');
+        document.getElementById('search-area')
     );
     // Here we define all the event listeners, clickable by the tagged
     // buttons.
@@ -272,7 +272,7 @@ function populateInfoWindow(item, marker, infoWindow){
   else {
     infoWindow.setContent('<div><a href="'+item.url+'">' + item.name + '</a></div>' +
       '<div><strong>Address:</strong> ' + item.location.address +'</div>' +
-      '<div> Data powered by <a href="https://developer.foursquare.com/"> Foursquare </a></div>');
+      '<div> Data powered by <a href="https://developer.foursquare.com/"><i class="fab fa-foursquare fa-1x"></i></a></div>');
     infoWindow.open(map, marker);
   }
 }
