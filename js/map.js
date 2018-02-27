@@ -1,10 +1,13 @@
 // Initialize global variables here.
 var map;
-var jsonData;
-var foodListings;
 var markers = [];
+// We initialize the client_id and client_secret of Foursquare as global
+// variables to be used in the various scopes of this file.
 FOURSQUARE_CLIENT_ID = "IGSBB23NYXAIMP5CO1OVV4M3DSR5PFCMDYF5UAWHSRKK4AJH";
 FOURSQUARE_CLIENT_SECRET = "H3S03FQBEVV3YCRRORCQLG4TFKQYWM00POWVXAUQZCNVWGF3";
+
+// We declare the category IDs here to be used in the various requests to the
+// Foursquare API
 var foodCategoryId = '4d4b7105d754a06374d81259';
 var nightlifeCategoryId = '4d4b7105d754a06376d81259';
 var gymCategoryId = "4bf58dd8d48988d175941735";
@@ -143,17 +146,10 @@ function initMap() {
             ]
 
         });
-    var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-    var mapCenterPoint = new google.maps.Marker({
-      map: map,
-      position: map.getCenter(),
-      animation: google.maps.Animation.DROP,
-      icon: iconBase + "img/632503-compass_wind_rose-512.png"
-    })
-    // Here, we create a variable that tags the search-area input in our respective
-    // DOM.
+    // The searchPlaces input text-box has a google places API autocomplete
+    // functionality implemented to find all available areas in the text box.
     var searchPlaces = new google.maps.places.Autocomplete(
-        document.getElementById('search-area')
+        document.getElementById('search-area');
     );
     // Here we define all the event listeners, clickable by the tagged
     // buttons.
@@ -197,8 +193,8 @@ function goToArea() {
     };
 }
 
-// this is our listing model. It contains attributes such as name, address, and
-// marker
+// This is our listing model. It contains attributes such as name, address, and
+// marker.
 var Listing = function(data) {
     var self = this;
     this.name = ko.observable(data.name);
@@ -208,7 +204,6 @@ var Listing = function(data) {
 
 var ViewModel = function() {
     var self = this;
-    var foodData;
     var infoWindow = new google.maps.InfoWindow();
 
     // For our initial data, we first construct the url from the Foursquare api,
@@ -238,7 +233,7 @@ var ViewModel = function() {
         });
         return initialFoodData;
     })();
-    console.log(initialFoodData);
+    //console.log(initialFoodData);
     self.list = ko.observableArray([]);
     var infoWindow = new google.maps.InfoWindow();
     initialFoodListings.forEach(function(foodItem) {
@@ -252,7 +247,7 @@ var ViewModel = function() {
           populateInfoWindow(foodItem, this, infoWindow);
         })
     });
-    console.log(self.list);
+    //console.log(self.list);
     if (self.list == null){
       window.alert("Data did not load! Please try again.")
     }
@@ -265,20 +260,21 @@ function removeMarkers(){
 }
 
 function populateInfoWindow(item, marker, infoWindow){
-  console.log("Successful click!");
+  // if url is not found in the venue, display note on the bottom saying there
+  // was no URL found. Else, set hyperlink of URL on the title of the venue.
   if (item.url == null){
     infoWindow.setContent('<div>' + item.name + '</div>' +
       '<div> Data powered by <a href="https://developer.foursquare.com/"> Foursquare </a></div>' +
+      '<div><strong>Address:</strong> ' + item.location.address +'</div>' +
       '<div><strong>Note:</strong> no URL available from Foursquare. </div>');
     infoWindow.open(map, marker);
   }
   else {
     infoWindow.setContent('<div><a href="'+item.url+'">' + item.name + '</a></div>' +
+      '<div><strong>Address:</strong> ' + item.location.address +'</div>' +
       '<div> Data powered by <a href="https://developer.foursquare.com/"> Foursquare </a></div>');
     infoWindow.open(map, marker);
   }
-  // clear infowindow content First
-
 }
 
 
@@ -296,8 +292,7 @@ function query(map, categoryId){
       'categoryId': categoryId,
       'v': "20180101"
   });
-  // Testing console if data is successfully encoded
-  console.log(map.getCenter().lat() + ', ' + map.getCenter().lng());
+
 
   // we store the jsonData of the queried category in a variable here.
   var jsonData = (function() {
@@ -313,6 +308,7 @@ function query(map, categoryId){
       });
       return jsonData;
   })();
+  // we create a new list of the venues, based on our query
   var listings = jsonData.response.venues;
   if (listings.length == 0){
     window.alert("No listings found! Try changing the area.");
