@@ -214,7 +214,7 @@ var ViewModel = function() {
         'client_secret': FOURSQUARE_CLIENT_SECRET,
         'near': "montreal",
         'categoryId': foodCategoryId,
-        'v': "20180101"
+        'v': "20180302"
     });
 
     // Using the URL we just created, we send an AJAX request and attach it into
@@ -226,11 +226,15 @@ var ViewModel = function() {
             'global': true,
             'url': foursquareUrl,
             'dataType': "json",
+            error: function(xhr, error){
+                window.alert("Could not use Foursquare! Status is " +
+                xhr.status+". Please refer to https://developer.foursquare.com/docs/api/troubleshooting/errors for more information");
+            },
             'success': function(data) {
                 initialFoodData = data;
-                initialFoodListings = initialFoodData.response.venues;
+                var initialFoodListings = initialFoodData.response.venues;
             }
-        });
+        })
         return initialFoodData;
     })();
     //console.log(initialFoodData);
