@@ -232,7 +232,7 @@ var ViewModel = function() {
             },
             'success': function(data) {
                 initialFoodData = data;
-                var initialFoodListings = initialFoodData.response.venues;
+                initialFoodListings = initialFoodData.response.venues;
             }
         })
         return initialFoodData;
@@ -262,6 +262,7 @@ function removeMarkers(){
     markers[i].setMap(null);
   }
 }
+ko.applyBindings(ViewModel());
 
 function populateInfoWindow(item, marker, infoWindow){
   // if url is not found in the venue, display note on the bottom saying there
@@ -298,7 +299,7 @@ function query(map, categoryId){
       'client_secret': FOURSQUARE_CLIENT_SECRET,
       'll': map.getCenter().lat() + ', ' + map.getCenter().lng(),
       'categoryId': categoryId,
-      'v': "20180101"
+      'v': "20180301"
   });
 
 
