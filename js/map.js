@@ -254,7 +254,7 @@ var ViewModel = function() {
     //console.log(self.list);
     if (self.list === null){
       window.alert("Data did not load! Please try again.");
-    }
+    } 
 };
 
 function removeMarkers(){
