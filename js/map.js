@@ -153,9 +153,7 @@ function initMap() {
     );
     // Here we define all the event listeners, clickable by the tagged
     // buttons.
-    document.getElementById('search-area-go').addEventListener('click', function() {
-        goToArea();
-    });
+    
     // for each icon, we add a click listener to filter searches into that
     // category
     document.getElementById('eat').addEventListener('click', function() {
@@ -205,6 +203,11 @@ var Listing = function(data) {
 var ViewModel = function() {
     var self = this;
     var infoWindow = new google.maps.InfoWindow();
+    // area function, which is in the viewModel, calls the external goToArea()
+    // function.
+    area = (function(){
+      goToArea();
+    })
 
     // For our initial data, we first construct the url from the Foursquare api,
     // which contains a HTTP GET request to the food category.
@@ -254,7 +257,7 @@ var ViewModel = function() {
     //console.log(self.list);
     if (self.list === null){
       window.alert("Data did not load! Please try again.");
-    } 
+    }
 };
 
 function removeMarkers(){
