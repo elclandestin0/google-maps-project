@@ -317,6 +317,10 @@ function query(map, categoryId){
           'global': true,
           'url': url,
           'dataType': "json",
+          error: function(xhr, error){
+              window.alert("Could not use Foursquare! Status is " +
+              xhr.status+". Please refer to https://developer.foursquare.com/docs/api/troubleshooting/errors for more information");
+          },
           'success': function(data) {
               jsonData = data;
           }
