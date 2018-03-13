@@ -153,18 +153,9 @@ function initMap() {
     );
     // Here we define all the event listeners, clickable by the tagged
     // buttons.
-    
+
     // for each icon, we add a click listener to filter searches into that
     // category
-    document.getElementById('eat').addEventListener('click', function() {
-        query(map, foodCategoryId);
-    });
-    document.getElementById('nightlife').addEventListener('click', function() {
-        query(map, nightlifeCategoryId);
-    });
-    document.getElementById('gym').addEventListener('click', function() {
-        query(map, gymCategoryId);
-    });
     ko.applyBindings(ViewModel());
 }
 
@@ -209,6 +200,18 @@ var ViewModel = function() {
       goToArea();
     })
 
+    nightlife = (function(){
+      query(map, nightlifeCategoryId);
+    })
+
+    food = (function(){
+      query(map, foodCategoryId);
+    })
+
+    gym = (function(){
+      query(map, gymCategoryId);
+    })
+
     // For our initial data, we first construct the url from the Foursquare api,
     // which contains a HTTP GET request to the food category.
     var foursquareUrl = "https://api.foursquare.com/v2/venues/search";
@@ -240,7 +243,6 @@ var ViewModel = function() {
         })
         return initialFoodData;
     })();
-    //console.log(initialFoodData);
     self.list = ko.observableArray([]);
     infoWindow = new google.maps.InfoWindow();
     initialFoodListings.forEach(function(foodItem) {
@@ -254,7 +256,6 @@ var ViewModel = function() {
           populateInfoWindow(foodItem, this, infoWindow);
         });
     });
-    //console.log(self.list);
     if (self.list === null){
       window.alert("Data did not load! Please try again.");
     }
@@ -265,6 +266,7 @@ function removeMarkers(){
     markers[i].setMap(null);
   }
 }
+
 ko.applyBindings(ViewModel());
 
 function populateInfoWindow(item, marker, infoWindow){
@@ -293,6 +295,7 @@ function populateInfoWindow(item, marker, infoWindow){
 // this function queries for the model in the list. Each click of a button
 // initializes a new API request and parses it onto the model.
 function query(map, categoryId){
+  console.log("stuff");
   var viewModel = new ViewModel();
   var infoWindow = new google.maps.InfoWindow();
   console.log("Querying...");
