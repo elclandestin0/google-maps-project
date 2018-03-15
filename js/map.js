@@ -211,9 +211,9 @@ var Listing = function(data) {
     self.name = ko.observable(data.name);
     self.address = ko.observable(data.address);
     self.marker = ko.observable();
-    self.venueInfo = (function(){
-      goToMarker(data)
-    })
+    self.venueInfo = (function() {
+        goToMarker(data);
+    });
 };
 
 var ViewModel = function() {
@@ -221,21 +221,21 @@ var ViewModel = function() {
     var infoWindow = new google.maps.InfoWindow();
     // area function, which is in the viewModel, calls the external goToArea()
     // function.
-    area = (function(){
-      goToArea();
-    })
+    area = (function() {
+        goToArea();
+    });
 
-    nightlife = (function(){
-      query(map, nightlifeCategoryId);
-    })
+    nightlife = (function() {
+        query(map, nightlifeCategoryId);
+    });
 
-    food = (function(){
-      query(map, foodCategoryId);
-    })
+    food = (function() {
+        query(map, foodCategoryId);
+    });
 
-    gym = (function(){
-      query(map, gymCategoryId);
-    })
+    gym = (function() {
+        query(map, gymCategoryId);
+    });
 
     // For our initial data, we first construct the url from the Foursquare api,
     // which contains a HTTP GET request to the food category.
@@ -257,123 +257,133 @@ var ViewModel = function() {
             'global': true,
             'url': foursquareUrl,
             'dataType': "json",
-            error: function(xhr, error){
+            error: function(xhr, error) {
                 window.alert("Could not use Foursquare! Status is " +
-                xhr.status+". Please refer to https://developer.foursquare.com/docs/api/troubleshooting/errors for more information");
+                    xhr.status + ". Please refer to https://developer.foursquare.com/docs/api/troubleshooting/errors for more information");
             },
             'success': function(data) {
                 initialFoodData = data;
                 initialFoodListings = initialFoodData.response.venues;
             }
-        })
+        });
         return initialFoodData;
     })();
     self.list = ko.observableArray([]);
     infoWindow = new google.maps.InfoWindow();
     initialFoodListings.forEach(function(foodItem) {
         markers.push(marker = new google.maps.Marker({
-          map: map,
-          position: {lat: foodItem.location.lat, lng: foodItem.location.lng},
-          animation: google.maps.Animation.DROP
+            map: map,
+            position: {
+                lat: foodItem.location.lat,
+                lng: foodItem.location.lng
+            },
+            animation: google.maps.Animation.DROP
         }));
 
         self.list().push(
-          new Listing(foodItem)
+            new Listing(foodItem)
         );
 
-        marker.addListener('click', function(){
-          populateInfoWindow(foodItem, this, infoWindow);
+        marker.addListener('click', function() {
+            populateInfoWindow(foodItem, this, infoWindow);
         });
     });
-    if (self.list === null){
-      window.alert("Data did not load! Please try again.");
+    if (self.list === null) {
+        window.alert("Data did not load! Please try again.");
     }
 };
 
-function removeMarkers(){
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(null);
-  }
+
+function removeMarkers() {
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
 }
 
 ko.applyBindings(ViewModel());
 
-function populateInfoWindow(item, marker, infoWindow){
-  // if url is not found in the venue, display note on the bottom saying there
-  // was no URL found. Else, set hyperlink of URL on the title of the venue.
-  if (item.url === null){
-    infoWindow.setContent('<div>' + item.name + '</div>' +
-      '<div> Data powered by <a href="https://developer.foursquare.com/"><i class="fab fa-foursquare fa-1x"></i>oursquare</a></div>' +
-      '<div><strong>Address:</strong> ' + item.location.address +'</div>' +
-      '<div><strong>Note:</strong> no URL available from Foursquare. </div>');
-    infoWindow.open(map, marker);
-    marker.setAnimation(google.maps.Animation.BOUNCE);
-    setTimeout(function(){ marker.setAnimation(null); }, 1400);
-  }
-  else {
-    infoWindow.setContent('<div><a href="'+item.url+'">' + item.name + '</a></div>' +
-      '<div><strong>Address:</strong> ' + item.location.address +'</div>' +
-      '<div> Data powered by <a href="https://developer.foursquare.com/"><i class="fab fa-foursquare fa-1x"></i>oursquare</a></div>');
-    infoWindow.open(map, marker);
-    marker.setAnimation(google.maps.Animation.BOUNCE);
-    setTimeout(function(){ marker.setAnimation(null); }, 1400);
-  }
+function populateInfoWindow(item, marker, infoWindow) {
+    // if url is not found in the venue, display note on the bottom saying there
+    // was no URL found. Else, set hyperlink of URL on the title of the venue.
+    if (item.url === null) {
+        infoWindow.setContent('<div>' + item.name + '</div>' +
+            '<div> Data powered by <a href="https://developer.foursquare.com/"><i class="fab fa-foursquare fa-1x"></i>oursquare</a></div>' +
+            '<div><strong>Address:</strong> ' + item.location.address + '</div>' +
+            '<div><strong>Note:</strong> no URL available from Foursquare. </div>');
+        infoWindow.open(map, marker);
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function() {
+            marker.setAnimation(null);
+        }, 1400);
+    } else {
+        infoWindow.setContent('<div><a href="' + item.url + '">' + item.name + '</a></div>' +
+            '<div><strong>Address:</strong> ' + item.location.address + '</div>' +
+            '<div> Data powered by <a href="https://developer.foursquare.com/"><i class="fab fa-foursquare fa-1x"></i>oursquare</a></div>');
+        infoWindow.open(map, marker);
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function() {
+            marker.setAnimation(null);
+        }, 1400);
+    }
 }
 
 
 // this function queries for the model in the list. Each click of a button
 // initializes a new API request and parses it onto the model.
-function query(map, categoryId){
-  console.log("stuff");
-  var viewModel = new ViewModel();
-  var infoWindow = new google.maps.InfoWindow();
-  console.log("Querying...");
-  var url = "https://api.foursquare.com/v2/venues/search";
-  url += '?' + $.param({
-      'client_id': FOURSQUARE_CLIENT_ID,
-      'client_secret': FOURSQUARE_CLIENT_SECRET,
-      'll': map.getCenter().lat() + ', ' + map.getCenter().lng(),
-      'categoryId': categoryId,
-      'v': "20180301"
-  });
-
-
-  // we store the jsonData of the queried category in a variable here.
-  var jsonData = (function() {
-      var jsonData = null;
-      $.ajax({
-          'async': false,
-          'global': true,
-          'url': url,
-          'dataType': "json",
-          error: function(xhr, error){
-              window.alert("Could not use Foursquare! Status is " +
-              xhr.status+". Please refer to https://developer.foursquare.com/docs/api/troubleshooting/errors for more information");
-          },
-          'success': function(data) {
-              jsonData = data;
-          }
-      });
-      return jsonData;
-  })();
-  // we create a new list of the venues, based on our query
-  var listings = jsonData.response.venues;
-  if (listings.length === 0){
-    window.alert("No listings found! Try changing the area.");
-  } else {
-    console.log("removing all data first, then repopulating");
-    self.list.removeAll();
-    removeMarkers();
-    listings.forEach(function(item) {
-      self.list.push(new Listing(item));
-      markers.push(marker = new google.maps.Marker({
-        map: map,
-        position: {lat: item.location.lat, lng: item.location.lng},
-        animation: google.maps.Animation.DROP
-      }));
-      marker.addListener('click', function(){
-        populateInfoWindow(item, this, infoWindow);
-      });
+function query(map, categoryId) {
+    console.log("stuff");
+    var viewModel = new ViewModel();
+    var infoWindow = new google.maps.InfoWindow();
+    console.log("Querying...");
+    var url = "https://api.foursquare.com/v2/venues/search";
+    url += '?' + $.param({
+        'client_id': FOURSQUARE_CLIENT_ID,
+        'client_secret': FOURSQUARE_CLIENT_SECRET,
+        'll': map.getCenter().lat() + ', ' + map.getCenter().lng(),
+        'categoryId': categoryId,
+        'v': "20180301"
     });
-  }
+
+
+    // we store the jsonData of the queried category in a variable here.
+    var jsonData = (function() {
+        var jsonData = null;
+        $.ajax({
+            'async': false,
+            'global': true,
+            'url': url,
+            'dataType': "json",
+            error: function(xhr, error) {
+                window.alert("Could not use Foursquare! Status is " +
+                    xhr.status + ". Please refer to https://developer.foursquare.com/docs/api/troubleshooting/errors for more information");
+            },
+            'success': function(data) {
+                jsonData = data;
+            }
+        });
+        return jsonData;
+    })();
+    // we create a new list of the venues, based on our query
+    var listings = jsonData.response.venues;
+    if (listings.length === 0) {
+        window.alert("No listings found! Try changing the area.");
+    } else {
+        console.log("removing all data first, then repopulating");
+        self.list.removeAll();
+        removeMarkers();
+        listings.forEach(function(item) {
+            self.list.push(new Listing(item));
+            markers.push(marker = new google.maps.Marker({
+                map: map,
+                position: {
+                    lat: item.location.lat,
+                    lng: item.location.lng
+                },
+                animation: google.maps.Animation.DROP
+            }));
+            marker.addListener('click', function() {
+                populateInfoWindow(item, this, infoWindow);
+            });
+        });
+    }
 }
