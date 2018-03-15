@@ -182,13 +182,38 @@ function goToArea() {
     }
 }
 
+function goToMarker(item) {
+    var geocoder = new google.maps.Geocoder();
+    var address = item.location.address;
+
+    if (address === "") {
+        window.alert("No address found for the Foursquare Venue.");
+    } else {
+        geocoder.geocode({
+            address: address
+        }, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+                console.log(results[0].geometry.location);
+                map.setZoom(18);
+                console.log(address);
+            } else {
+                window.alert('Could not find location, enter something more specific');
+            }
+        });
+    }
+}
+
 // This is our listing model. It contains attributes such as name, address, and
 // marker.
 var Listing = function(data) {
     var self = this;
-    this.name = ko.observable(data.name);
-    this.address = ko.observable(data.address);
-    this.marker = ko.observable();
+    self.name = ko.observable(data.name);
+    self.address = ko.observable(data.address);
+    self.marker = ko.observable();
+    self.venueInfo = (function(){
+      goToMarker(data)
+    })
 };
 
 var ViewModel = function() {
@@ -246,12 +271,16 @@ var ViewModel = function() {
     self.list = ko.observableArray([]);
     infoWindow = new google.maps.InfoWindow();
     initialFoodListings.forEach(function(foodItem) {
-        self.list().push(new Listing(foodItem));
         markers.push(marker = new google.maps.Marker({
           map: map,
           position: {lat: foodItem.location.lat, lng: foodItem.location.lng},
           animation: google.maps.Animation.DROP
         }));
+
+        self.list().push(
+          new Listing(foodItem)
+        );
+
         marker.addListener('click', function(){
           populateInfoWindow(foodItem, this, infoWindow);
         });
