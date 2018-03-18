@@ -1,6 +1,7 @@
 // Initialize global variables here.
 var map;
 var markers = [];
+
 // We initialize the client_id and client_secret of Foursquare as global
 // variables to be used in the various scopes of this file.
 var FOURSQUARE_CLIENT_ID = "IGSBB23NYXAIMP5CO1OVV4M3DSR5PFCMDYF5UAWHSRKK4AJH";
@@ -163,6 +164,7 @@ function initMap() {
 // goToArea() function.
 function goToArea() {
     var geocoder = new google.maps.Geocoder();
+    var address; 
     var address = document.getElementById('search-area').value;
 
     if (address === "") {
