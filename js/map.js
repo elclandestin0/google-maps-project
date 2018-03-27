@@ -164,7 +164,7 @@ function initMap() {
 // goToArea() function.
 function goToArea() {
     var geocoder = new google.maps.Geocoder();
-    var address; 
+    var address;
     var address = document.getElementById('search-area').value;
 
     if (address === "") {
@@ -210,11 +210,25 @@ function goToMarker(item) {
 // marker.
 var Listing = function(data) {
     var self = this;
+    var infoWindow = new google.maps.InfoWindow();
     self.name = ko.observable(data.name);
     self.address = ko.observable(data.address);
-    self.marker = ko.observable();
+    //self.marker = ko.observable();
+    markers.push(self.marker = new google.maps.Marker({
+        map: map,
+        position: {
+            lat: data.location.lat,
+            lng: data.location.lng
+        },
+        animation: google.maps.Animation.DROP
+    }));
+    self.marker.addListener('click', function() {
+        console.log("before population");
+        populateInfoWindow(data, self.marker, infoWindow);
+    });
     self.venueInfo = (function() {
         goToMarker(data);
+        populateInfoWindow(data, self.marker, infoWindow);
     });
 };
 
@@ -273,22 +287,9 @@ var ViewModel = function() {
     self.list = ko.observableArray([]);
     infoWindow = new google.maps.InfoWindow();
     initialFoodListings.forEach(function(foodItem) {
-        markers.push(marker = new google.maps.Marker({
-            map: map,
-            position: {
-                lat: foodItem.location.lat,
-                lng: foodItem.location.lng
-            },
-            animation: google.maps.Animation.DROP
-        }));
-
-        self.list().push(
-            new Listing(foodItem)
-        );
-
-        marker.addListener('click', function() {
-            populateInfoWindow(foodItem, this, infoWindow);
-        });
+      self.list().push(
+          new Listing(foodItem)
+      );
     });
     if (self.list === null) {
         window.alert("Data did not load! Please try again.");
@@ -335,7 +336,7 @@ function populateInfoWindow(item, marker, infoWindow) {
 function query(map, categoryId) {
     console.log("stuff");
     var viewModel = new ViewModel();
-    var infoWindow = new google.maps.InfoWindow();
+
     console.log("Querying...");
     var url = "https://api.foursquare.com/v2/venues/search";
     url += '?' + $.param({
@@ -375,17 +376,6 @@ function query(map, categoryId) {
         removeMarkers();
         listings.forEach(function(item) {
             self.list.push(new Listing(item));
-            markers.push(marker = new google.maps.Marker({
-                map: map,
-                position: {
-                    lat: item.location.lat,
-                    lng: item.location.lng
-                },
-                animation: google.maps.Animation.DROP
-            }));
-            marker.addListener('click', function() {
-                populateInfoWindow(item, this, infoWindow);
-            });
         });
     }
 }
