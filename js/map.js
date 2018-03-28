@@ -152,32 +152,26 @@ function initMap() {
     var searchPlaces = new google.maps.places.Autocomplete(
         document.getElementById('search-area')
     );
-    // Here we define all the event listeners, clickable by the tagged
-    // buttons.
-
-    // for each icon, we add a click listener to filter searches into that
-    // category
     ko.applyBindings(ViewModel());
 }
 
 // We then tag the go-places button and add an eventListener to execute the
 // goToArea() function.
-function goToArea() {
+function goToArea(loc) {
     var geocoder = new google.maps.Geocoder();
-    var address;
-    var address = document.getElementById('search-area').value;
-
-    if (address === "") {
+    if (loc === "") {
         window.alert("Please enter the address.");
     } else {
         geocoder.geocode({
-            address: address
+            address: String(loc)
         }, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 map.setCenter(results[0].geometry.location);
                 map.setZoom(14);
                 console.log("lat lng are: " + map.getCenter().lat() + ', ' + map.getCenter().lng());
             } else {
+                console.log(String(loc));
+                console.log(loc);
                 window.alert('Could not find location, enter something more specific');
             }
         });
@@ -212,8 +206,7 @@ var Listing = function(data) {
     var self = this;
     var infoWindow = new google.maps.InfoWindow();
     self.name = ko.observable(data.name);
-    self.address = ko.observable(data.address);
-    //self.marker = ko.observable();
+    self.address = ko.observable("");
     markers.push(self.marker = new google.maps.Marker({
         map: map,
         position: {
@@ -223,7 +216,7 @@ var Listing = function(data) {
         animation: google.maps.Animation.DROP
     }));
     self.marker.addListener('click', function() {
-        console.log("before population");
+        this.infoWindow.setContent(null);
         populateInfoWindow(data, self.marker, infoWindow);
     });
     self.venueInfo = (function() {
@@ -235,10 +228,11 @@ var Listing = function(data) {
 var ViewModel = function() {
     var self = this;
     var infoWindow = new google.maps.InfoWindow();
+    this.loc = ko.observable("");
     // area function, which is in the viewModel, calls the external goToArea()
     // function.
     area = (function() {
-        goToArea();
+        goToArea(this.location);
     });
 
     nightlife = (function() {
