@@ -18,7 +18,7 @@
                <h4 class="white"> what's good in the 'hood? </h4>
             </div>
             <div class="row">
-               <input id="search-area" class="full-width" type="text" placeholder="Enter city here" data-bind="value: loc">
+               <input id="search-area" class="full-width" type="text" placeholder="Enter city here" data-bind="textInput: loc">
                <input id="search-area-go" type="button" value="Go" data-bind="click: area">
             </div>
             <div class="row">
@@ -35,12 +35,12 @@
                      </a>
                   </li>
                </ul>
-               <p>
-                 <input class="filter" type="search" placeholder="Search..." data-bind="">
-               </p>
                <div class="list-group" data-bind="foreach: list">
                   <button class="light-blue list-group-item list-group-item-action" data-bind="text: name, click: venueInfo"></button>
                </div>
+               <p>
+                 <input class="filter" type="search" placeholder="Search..." data-bind="">
+               </p>
             </div>
             <div class="row">
                <h6 class="white">Powered by<br><br>
@@ -60,7 +60,11 @@
       <script src="js/map.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
          integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+         <script>
+                ko.applyBindings(ViewModel());
+               </script>
       <script async defer
             src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyDGi1sF4Ten1ctxC4bgjI_bPOkaAW89F50&v=3&callback=initMap"></script>
+
    </body>
 </html>

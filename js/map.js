@@ -1,7 +1,8 @@
 // Initialize global variables here.
 var map;
 var markers = [];
-
+var fetchedData;
+var json = null;
 // We initialize the client_id and client_secret of Foursquare as global
 // variables to be used in the various scopes of this file.
 var FOURSQUARE_CLIENT_ID = "IGSBB23NYXAIMP5CO1OVV4M3DSR5PFCMDYF5UAWHSRKK4AJH";
@@ -152,7 +153,7 @@ function initMap() {
     var searchPlaces = new google.maps.places.Autocomplete(
         document.getElementById('search-area')
     );
-    ko.applyBindings(ViewModel());
+    //ko.applyBindings(ViewModel());
 }
 
 // We then tag the go-places button and add an eventListener to execute the
@@ -216,7 +217,6 @@ var Listing = function(data) {
         animation: google.maps.Animation.DROP
     }));
     self.marker.addListener('click', function() {
-        this.infoWindow.setContent(null);
         populateInfoWindow(data, self.marker, infoWindow);
     });
     self.venueInfo = (function() {
@@ -227,12 +227,14 @@ var Listing = function(data) {
 
 var ViewModel = function() {
     var self = this;
-    var infoWindow = new google.maps.InfoWindow();
-    this.loc = ko.observable("");
+    self.list = [];
+    var initialFoodListings = null;
+    self.loc = "";
+    console.log(loc);
     // area function, which is in the viewModel, calls the external goToArea()
     // function.
     area = (function() {
-        goToArea(this.location);
+        goToArea(loc);
     });
 
     nightlife = (function() {
@@ -260,31 +262,27 @@ var ViewModel = function() {
 
     // Using the URL we just created, we send an AJAX request and attach it into
     // a JSON variable, if it's successful.
-    initialFoodData = (function() {
-        initialFoodData = null;
-        $.ajax({
-            'async': false,
-            'global': true,
-            'url': foursquareUrl,
-            'dataType': "json",
-            error: function(xhr, error) {
-                window.alert("Could not use Foursquare! Status is " +
-                    xhr.status + ". Please refer to https://developer.foursquare.com/docs/api/troubleshooting/errors for more information");
-            },
-            'success': function(data) {
-                initialFoodData = data;
-                initialFoodListings = initialFoodData.response.venues;
+    $.ajax({
+        'async': true,
+        'global': true,
+        'url': foursquareUrl,
+        'dataType': "json",
+        error: function(xhr, error) {
+            window.alert("Could not use Foursquare! Status is " +
+                xhr.status + ". Please refer to https://developer.foursquare.com/docs/api/troubleshooting/errors for more information");
+        },
+        'success': function(data) {
+            if (data.response.venues != null)
+            {
+                data.response.venues.forEach(function(foodItem){
+                  self.list.push(
+                    new Listing(foodItem)
+                );
+              });
             }
-        });
-        return initialFoodData;
-    })();
-    self.list = ko.observableArray([]);
-    infoWindow = new google.maps.InfoWindow();
-    initialFoodListings.forEach(function(foodItem) {
-      self.list().push(
-          new Listing(foodItem)
-      );
+        }
     });
+    //console.log(fetchedData);
     if (self.list === null) {
         window.alert("Data did not load! Please try again.");
     }
@@ -342,11 +340,8 @@ function query(map, categoryId) {
     });
 
 
-    // we store the jsonData of the queried category in a variable here.
-    var jsonData = (function() {
-        var jsonData = null;
         $.ajax({
-            'async': false,
+            'async': true,
             'global': true,
             'url': url,
             'dataType': "json",
@@ -355,21 +350,30 @@ function query(map, categoryId) {
                     xhr.status + ". Please refer to https://developer.foursquare.com/docs/api/troubleshooting/errors for more information");
             },
             'success': function(data) {
-                jsonData = data;
+              console.log(data.response.venues);
+              fetchedData = data.response.venues;
+              if (fetchedData != null)
+              {
+                self.list.removeAll();
+                removeMarkers();
+                  fetchedData.forEach(function(item){
+                    self.list().push(
+                      new Listing(item)
+                  );
+                });
+                console.log(list());
+              }
             }
         });
-        return jsonData;
-    })();
     // we create a new list of the venues, based on our query
-    var listings = jsonData.response.venues;
-    if (listings.length === 0) {
-        window.alert("No listings found! Try changing the area.");
-    } else {
-        console.log("removing all data first, then repopulating");
-        self.list.removeAll();
-        removeMarkers();
-        listings.forEach(function(item) {
-            self.list.push(new Listing(item));
-        });
-    }
+    // if (fetchedData.length === 0) {
+    //     window.alert("No listings found! Try changing the area.");
+    // } else {
+    //     console.log("removing all data first, then repopulating");
+    //     self.list.removeAll();
+    //     removeMarkers();
+    //     listings.forEach(function(item) {
+    //         self.list.push(new Listing(item));
+    //     });
+    // }
 }
