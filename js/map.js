@@ -3,6 +3,7 @@ var map;
 var markers = [];
 var fetchedData;
 var json = null;
+var infowWindow;
 // We initialize the client_id and client_secret of Foursquare as global
 // variables to be used in the various scopes of this file.
 var FOURSQUARE_CLIENT_ID = "IGSBB23NYXAIMP5CO1OVV4M3DSR5PFCMDYF5UAWHSRKK4AJH";
@@ -153,7 +154,7 @@ function initMap() {
     var searchPlaces = new google.maps.places.Autocomplete(
         document.getElementById('search-area')
     );
-    //ko.applyBindings(ViewModel());
+    infoWindow = new google.maps.InfoWindow()
 }
 
 // We then tag the go-places button and add an eventListener to execute the
@@ -205,8 +206,7 @@ function goToMarker(item) {
 // marker.
 var Listing = function(data) {
     var self = this;
-    var infoWindow = new google.maps.InfoWindow();
-    self.name = ko.observable(data.name);
+    self.name = data.name;
     self.address = ko.observable("");
     markers.push(self.marker = new google.maps.Marker({
         map: map,
@@ -227,7 +227,7 @@ var Listing = function(data) {
 
 var ViewModel = function() {
     var self = this;
-    self.list = [];
+    self.list = ko.observableArray([]);
     var initialFoodListings = null;
     self.loc = "";
     console.log(loc);
@@ -274,7 +274,9 @@ var ViewModel = function() {
         'success': function(data) {
             if (data.response.venues != null)
             {
+                console.log(data.response.venues);
                 data.response.venues.forEach(function(foodItem){
+                  console.log(foodItem.name);
                   self.list.push(
                     new Listing(foodItem)
                 );
@@ -282,7 +284,6 @@ var ViewModel = function() {
             }
         }
     });
-    //console.log(fetchedData);
     if (self.list === null) {
         window.alert("Data did not load! Please try again.");
     }
@@ -351,17 +352,15 @@ function query(map, categoryId) {
             },
             'success': function(data) {
               console.log(data.response.venues);
-              fetchedData = data.response.venues;
-              if (fetchedData != null)
+              if (data.response.venues != null)
               {
                 self.list.removeAll();
                 removeMarkers();
-                  fetchedData.forEach(function(item){
-                    self.list().push(
+                data.response.venues.forEach(function(item){
+                    self.list.push(
                       new Listing(item)
                   );
                 });
-                console.log(list());
               }
             }
         });
