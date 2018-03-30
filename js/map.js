@@ -297,7 +297,7 @@ function removeMarkers() {
     }
 }
 
-ko.applyBindings(ViewModel());
+// ko.applyBindings(ViewModel());
 
 function populateInfoWindow(item, marker, infoWindow) {
     // if url is not found in the venue, display note on the bottom saying there
