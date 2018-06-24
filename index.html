@@ -13,7 +13,7 @@
       <!-- Begin Container -->
       <div class="container-fluid main-app">
          <!-- Begin Listings -->
-         <div class="col-md-2 col-sm-3">
+         <!-- <div class="col-md-2">
             <div class="row">
                <h4 class="white"> what's good in the 'hood? </h4>
             </div>
@@ -47,24 +47,50 @@
                   <a href="https://developer.foursquare.com/"><i class="fab fa-foursquare fa-1x"></i>oursquare</a>
                   <a href="https://developers.google.com/maps/"><i class="fab fa-google fa-1x"></i>oogle</a>
                </h6>
-            </div>
+            <!-- </div> -->
+    <div data-bind="if: !searchClicked" class="col-md-1 col-xs-2 col-sm-2">
+      <div class="row">
+        <ul class="nav">
+          <li class="nav-item" align="center" id="nightlife" data-bind="click: search">
+             <a class="nav-link active" href="#"><i class="fa fa-search fa-2x"></i></a>
+          </li>
+        </ul>
+        </div>
+         <div class="row">
+            <ul class="nav">
+               <li class="nav-item" align="center" id="nightlife" data-bind="click: nightlife">
+                  <a class="nav-link active" href="#"><i class="fa fa-glass-martini fa-2x"></i></a>
+               </li>
+               <li class="nav-item" align="center" id="eat" data-bind="click: food">
+                  <a class="nav-link" href="#"><i class="fa fa-utensils fa-2x"></i></a>
+               </li>
+               <li class="nav-item"  align="center" id="gym" data-bind="click: gym">
+                  <a class="nav-link" href="#">
+                  <i class="fa fa-volleyball-ball fa-2x"></i>
+                  </a>
+               </li>
+            </ul>
          </div>
-         <!-- End Listings -->
-         <!-- Begin Map -->
-         <div id="map"></div>
-         <!-- End Map -->
       </div>
+      <div data-bind="if: searchClicked === true" class="col-md-4 col-xs-4 col-sm-4">
+      </div>
+
+      <!-- End Listings -->
+      <!-- Begin Map -->
+      <div style="background-color: black;" class="col-md-11 col-xs-10 col-sm-10" id="map"></div>
+      </div>
+      <!-- End Map -->
+  </div>
       <!-- End Container -->
       <script src="js/lib/knockout-3.4.2.js"></script>
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
       <script src="js/map.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
          integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-         <script>
-                ko.applyBindings(ViewModel());
-               </script>
+      <script>
+         ko.applyBindings(ViewModel());
+      </script>
       <script async defer
-            src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyDGi1sF4Ten1ctxC4bgjI_bPOkaAW89F50&v=3&callback=initMap"></script>
-
+         src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyDGi1sF4Ten1ctxC4bgjI_bPOkaAW89F50&v=3&callback=initMap"></script>
    </body>
 </html>

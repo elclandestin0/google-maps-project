@@ -1,9 +1,12 @@
+
+
 // Initialize global variables here.
 var map;
 var markers = [];
 var fetchedData;
 var json = null;
 var infowWindow;
+var searchClicked;
 // We initialize the client_id and client_secret of Foursquare as global
 // variables to be used in the various scopes of this file.
 var FOURSQUARE_CLIENT_ID = "IGSBB23NYXAIMP5CO1OVV4M3DSR5PFCMDYF5UAWHSRKK4AJH";
@@ -230,7 +233,8 @@ var ViewModel = function() {
     self.list = ko.observableArray([]);
     var initialFoodListings = null;
     self.loc = "";
-    console.log(loc);
+    // console.log(loc);
+    console.log(searchClicked);
     // area function, which is in the viewModel, calls the external goToArea()
     // function.
     area = (function() {
@@ -248,6 +252,11 @@ var ViewModel = function() {
     gym = (function() {
         query(map, gymCategoryId);
     });
+
+    search = (function() {
+      searchClicked = !searchClicked;
+      console.log(searchClicked);
+    })
 
     // For our initial data, we first construct the url from the Foursquare api,
     // which contains a HTTP GET request to the food category.
@@ -276,7 +285,6 @@ var ViewModel = function() {
             {
                 console.log(data.response.venues);
                 data.response.venues.forEach(function(foodItem){
-                  console.log(foodItem.name);
                   self.list.push(
                     new Listing(foodItem)
                 );
