@@ -51,20 +51,21 @@
     <div class="col-md-1 col-xs-2 col-sm-2">
       <div class="row">
         <ul class="nav">
-          <li class="nav-item" align="center" id="nightlife" data-bind="click: search" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+          <li class="nav-item" align="center" id="search" data-bind="click: search" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
              <a class="nav-link active" href="#"><i class="fa fa-search fa-1x"></i></a>
           </li>
+          <hr>
         </ul>
         </div>
          <div class="row">
             <ul class="nav">
-               <li class="nav-item" align="center" id="nightlife" data-bind="click: nightlife">
+               <li class="nav-item" align="center" id="nightlife" data-bind="click: nightlife" data-toggle="collapse" href="#openList">
                   <a class="nav-link active" href="#"><i class="fa fa-glass-martini fa-1x"></i></a>
                </li>
-               <li class="nav-item" align="center" id="eat" data-bind="click: food">
+               <li class="nav-item" align="center" id="eat" data-bind="click: food" data-toggle="collapse" href="#openList">
                   <a class="nav-link" href="#"><i class="fa fa-utensils fa-1x"></i></a>
                </li>
-               <li class="nav-item"  align="center" id="gym" data-bind="click: gym">
+               <li class="nav-item"  align="center" id="gym" data-bind="click: gym" data-toggle="collapse" href="#openList">
                   <a class="nav-link" href="#">
                   <i class="fa fa-volleyball-ball fa-1x"></i>
                   </a>
@@ -72,6 +73,13 @@
             </ul>
          </div>
       </div>
+        <div class="col-3">
+          <div class="collapse multi-collapse" id="openList">
+            <div class="list-group" data-bind="foreach: list">
+               <button class="light-blue list-group-item list-group-item-action" data-bind="text: name, click: venueInfo"></button>
+            </div>
+          </div>
+        </div>
         <div class="col-10">
           <div class="collapse multi-collapse" id="multiCollapseExample1">
             <input id="search-area" type="text" placeholder="Enter city here" data-bind="textInput: loc">
