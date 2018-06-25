@@ -48,7 +48,7 @@
                   <a href="https://developers.google.com/maps/"><i class="fab fa-google fa-1x"></i>oogle</a>
                </h6>
             <!-- </div> -->
-    <div data-bind="if: !searchClicked" class="col-md-1 col-xs-2 col-sm-2">
+    <!-- <div class="col-md-1 col-xs-2 col-sm-2">
       <div class="row">
         <ul class="nav">
           <li class="nav-item" align="center" id="nightlife" data-bind="click: search">
@@ -71,13 +71,35 @@
                </li>
             </ul>
          </div>
-      </div>
-      <div data-bind="if: searchClicked === true" class="col-md-4 col-xs-4 col-sm-4">
-      </div>
+      </div> -->
+        <div class="col-md-2 col-xs-4 col-sm-4">
+          <div class="row">
+             <input id="search-area" class="full-width" type="text" placeholder="Enter city here" data-bind="textInput: loc">
+             <input id="search-area-go" type="button" value="Go" data-bind="click: area">
+          </div>
+          <div class="row">
+             <ul class="nav nav-tabs" id="places">
+                <li class="nav-item" id="nightlife" data-bind="click: nightlife">
+                   <a class="nav-link active" href="#"><i class="fa fa-glass-martini fa-2x ml-auto"></i></a>
+                </li>
+                <li class="nav-item" id="eat" data-bind="click: food">
+                   <a class="nav-link" href="#"><i class="fa fa-utensils fa-2x ml-auto"></i></a>
+                </li>
+                <li class="nav-item" id="gym" data-bind="click: gym">
+                   <a class="nav-link" href="#">
+                   <i class="fa fa-volleyball-ball fa-2x ml-auto"></i>
+                   </a>
+                </li>
+             </ul>
+             <div class="list-group" data-bind="foreach: list">
+                <button class="light-blue list-group-item list-group-item-action" data-bind="text: name, click: venueInfo"></button>
+             </div>
+          </div>
+        </div>
 
       <!-- End Listings -->
       <!-- Begin Map -->
-      <div style="background-color: black;" class="col-md-11 col-xs-10 col-sm-10" id="map"></div>
+      <div class="col-md-10 col-xs-8 col-sm-8" id="map"></div>
       </div>
       <!-- End Map -->
   </div>

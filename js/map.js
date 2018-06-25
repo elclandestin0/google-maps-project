@@ -6,8 +6,8 @@ var markers = [];
 var fetchedData;
 var json = null;
 var infowWindow;
-var searchClicked;
-// We initialize the client_id and client_secret of Foursquare as global
+
+// We initialize the client_id and t of Foursquare as global
 // variables to be used in the various scopes of this file.
 var FOURSQUARE_CLIENT_ID = "IGSBB23NYXAIMP5CO1OVV4M3DSR5PFCMDYF5UAWHSRKK4AJH";
 var FOURSQUARE_CLIENT_SECRET = "H3S03FQBEVV3YCRRORCQLG4TFKQYWM00POWVXAUQZCNVWGF3";
@@ -230,11 +230,10 @@ var Listing = function(data) {
 
 var ViewModel = function() {
     var self = this;
-    self.list = ko.observableArray([]);
     var initialFoodListings = null;
+    self.list = ko.observableArray([]);
+    self.searchClicked = ko.observable(true);
     self.loc = "";
-    // console.log(loc);
-    console.log(searchClicked);
     // area function, which is in the viewModel, calls the external goToArea()
     // function.
     area = (function() {
@@ -254,9 +253,9 @@ var ViewModel = function() {
     });
 
     search = (function() {
-      searchClicked = !searchClicked;
-      console.log(searchClicked);
+      toggleSearchClicked();
     })
+
 
     // For our initial data, we first construct the url from the Foursquare api,
     // which contains a HTTP GET request to the food category.
@@ -332,6 +331,11 @@ function populateInfoWindow(item, marker, infoWindow) {
 }
 
 
+function toggleSearchClicked() {
+  self.searchClicked = !self.searchClicked;
+  console.log(self.searchClicked);
+}
+
 // this function queries for the model in the list. Each click of a button
 // initializes a new API request and parses it onto the model.
 function query(map, categoryId) {
@@ -372,15 +376,4 @@ function query(map, categoryId) {
               }
             }
         });
-    // we create a new list of the venues, based on our query
-    // if (fetchedData.length === 0) {
-    //     window.alert("No listings found! Try changing the area.");
-    // } else {
-    //     console.log("removing all data first, then repopulating");
-    //     self.list.removeAll();
-    //     removeMarkers();
-    //     listings.forEach(function(item) {
-    //         self.list.push(new Listing(item));
-    //     });
-    // }
 }
